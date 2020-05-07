@@ -3,26 +3,21 @@ from tkinter import *
 class PanelParametros(Frame):
 
     def __init__(self, pInterfaz):
-        super(PanelParametros, self).__init__(master=pInterfaz, highlightbackground="black", highlightcolor="black",
-                         highlightthickness=3)
-        self.principial = pInterfaz
+        super(PanelParametros, self).__init__(master=pInterfaz, highlightbackground="black",
+                                              highlightcolor="black", highlightthickness=3)
+        self.interfaz = pInterfaz
 
         # Titulo
-        self.title = Label(master=self, text="Parámetros")
-        self.title.grid(row=0, column=0)
+        Label(master=self, text="Parámetros").grid(row=0, column=0)
 
         # Labels Parametros
-        self.frecuencia_label = Label(master=self, text="Frecuencia Cardíaca")
-        self.frecuencia_label.grid(row=1, column=0)
+        Label(master=self, text="Frecuencia Cardíaca").grid(row=1, column=0)
 
-        self.latidos = Label(master=self, text="# de latidos")
-        self.latidos.grid(row=2, column=0)
+        Label(master=self, text="# de latidos").grid(row=2, column=0)
 
-        self.frecuencia_muestreo = Label(master=self, text="Frecuencia Muestreo")
-        self.frecuencia_muestreo.grid(row=3, column=0)
+        Label(master=self, text="Frecuencia Muestreo").grid(row=3, column=0)
 
-        self.factor_ruido = Label(master=self, text="Factor de Ruido")
-        self.factor_ruido.grid(row=4, column=0)
+        Label(master=self, text="Factor de Ruido").grid(row=4, column=0)
 
         # Input Parametros
         self.frecuencia_input = Entry(master=self)

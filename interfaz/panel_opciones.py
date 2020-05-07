@@ -9,6 +9,8 @@ class PanelOpciones(Frame):
         super(PanelOpciones, self).__init__(master=pInterfaz, highlightbackground="black", highlightcolor="black",
                          highlightthickness=3)
 
+        self.interfaz = pInterfaz
+
         # Botones
         self.guardar_boton = Button(master=self, text=self.GUARDAR)
         self.guardar_boton.pack(side=LEFT)

@@ -3,11 +3,12 @@ from interfaz.panel_parametros import PanelParametros
 from interfaz.panel_metodos import PanelMetodos
 from interfaz.panel_opciones import PanelOpciones
 from interfaz.panel_senales import PanelSenales
+from interfaz.panel_puntos import PanelPuntos
 
 class InterfazProyecto(Tk):
 
-    def __init__(self):
-        super(InterfazProyecto, self).__init__()
+    def __init__(self, name="Interfaz"):
+        super(InterfazProyecto, self).__init__(className=name)
 
         self.panel_parametros = PanelParametros(self)
         self.panel_parametros.grid(row=0, column=1)
@@ -21,7 +22,9 @@ class InterfazProyecto(Tk):
         self.panel_senales = PanelSenales(self)
         self.panel_senales.grid(row=1, column=0)
 
-if __name__ == '__main__':
+        self.panel_puntos = PanelPuntos(self)
+        self.panel_puntos.grid(row=2, column=0)
 
-    interfaz = InterfazProyecto()
+if __name__ == '__main__':
+    interfaz = InterfazProyecto(" ECG Monitor")
     interfaz.mainloop()
