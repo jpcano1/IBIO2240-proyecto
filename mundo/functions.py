@@ -7,8 +7,10 @@ def f(t, y):
 def f1_euler_back(t, y, h):
     return y / (1 - h * (0.49 - ((0.00245 * np.exp(0.49 * t)) / (0.49 + 0.005 * (np.exp(0.49 * t) - 1)))))
 
-def f1_euler_mod(t, y):
-    return (1 - (h / 2.0) * (0.49 - ((0.00245 * np.exp(0.49 * t)) / (0.49 + 0.005 * (np.exp(0.49 * t) - 1)))))
+def f1_euler_mod(t, h):
+    return (1 - (h / 2.0) *
+            (0.49 - ((0.00245 * np.exp(0.49 * t)) /
+                     (0.49 + 0.005 * (np.exp(0.49 * t) - 1)))))
 
 def euler_forward(func, h=0.01, y_0=0.01, t_0=0., t_f=30.):
     """
@@ -29,23 +31,23 @@ def euler_forward(func, h=0.01, y_0=0.01, t_0=0., t_f=30.):
         y_euler[i] = y_euler[i - 1] + h * func(T[i - 1], y_euler[i - 1])
     return T, y_euler
 
-def euler_backward(func, h=0.01, y_0=0.01, t_0=0., t_f=30.):
+def euler_backward(func_back, h=0.01, y_0=0.01, t_0=0., t_f=30.):
     T = np.arange(t_0, t_f + h, h)
     y_euler = np.zeros(len(T))
     y_euler[0] = y_0
 
     for i in range(1, len(T)):
-        y_euler[i] = f1_euler_back(T[i], y_euler[i-1], h)
+        y_euler[i] = func_back(T[i], y_euler[i-1], h)
     return T, y_euler
 
-def euler_modified(func, h=0.01, y_0=0.01, t_0=0., t_f=30.)
+def euler_modified(func, func_mod, h=0.01, y_0=0.01, t_0=0., t_f=30.):
     T = np.arange(t_0, t_f + h, h)
     y_euler = np.zeros(len(T))
     y_euler[0] = y_0
 
     for i in range(1, len(T)):
-        y_euler[i] = (y_euler[i - 1] + (h / 2.0) * f1(T[i - 1], y_euler[i - 1])) / \ f1_euler_mod(T[i], h)
-        return T, y_euler
+        y_euler[i] = (y_euler[i - 1] + (h / 2.0) * func(T[i - 1], y_euler[i - 1])) / func_mod(T[i], h)
+    return T, y_euler
 
 def y_analitc(t):
     # Tasa de infeccion
