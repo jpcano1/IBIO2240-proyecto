@@ -64,3 +64,17 @@ def y_analitc(t):
     expr1 = ((a * N-b) * i_0 * np.exp((a*N - b)*t))
     expr2 = ((a * N-b) + a * i_0 * (np.exp((a*N - b)*t)-1))
     return expr1 / expr2
+
+def rk4(f, h=0.01, y_0=0.01, t_0=0., t_f=30.):
+    T = np.arange(t_0, t_f + h, h)
+    y_rk4 = np.zeros(len(T))
+    y_rk4[0] = y_0
+
+    for i in range(1, len(T)):
+        k1 = f(T[i - 1], y_rk4[i - 1])
+        k2 = f(T[i -1] + 0.5 * h, y_rk4[i -1] + 0.5* k1 * h)
+        k3 = f(T[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * k2 * h)
+        k4 = f(T[i - 1] + h, y_rk4[i - 1] + k3 * h)
+        y_rk4[i] = y_rk4[i - 1] + (h / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+
+    return T, y_rk4
