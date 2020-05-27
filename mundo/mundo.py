@@ -21,7 +21,7 @@ def z_dot(x, y, z, *args):
         delta_theta_i = (theta - theta_i) % 2 * np.pi
         result += a_i * delta_theta_i * np.exp(-(delta_theta_i**2 / (2 * b_i**2))) \
                   - (z - z_0(t))
-    return result
+    return  - result
 
 def z_0(t):
     """Falta meter la frecuencia"""
