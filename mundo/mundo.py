@@ -24,6 +24,5 @@ def z_dot(x, y, z, *args):
     return  - result
 
 def z_0(t):
-    """Falta meter la frecuencia"""
     A = 0.15
-    return A * np.sin(2 * np.pi * t)
+    return A * np.sin(2 * np.pi* 0.25 * t)
