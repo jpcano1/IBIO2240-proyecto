@@ -22,5 +22,5 @@ class PanelPuntos(Frame):
             Checkbutton(self, variable=self.variables_b[i],background='#212946',
                                               foreground='#00ff41', activebackground='#212946',
                                               activeforeground='#00ff41', selectcolor='#212946',).grid(row=2, column=(i+1))
-        Label(self, text="a_i",background='#212946', foreground='#08F7FE').grid(row=1, column=0)
-        Label(self, text="b_i",background='#212946', foreground='#08F7FE').grid(row=2, column=0)
+        Label(self, text="a_i",background='#212946', foreground='#FE53BB').grid(row=1, column=0)
+        Label(self, text="b_i",background='#212946', foreground='#FE53BB').grid(row=2, column=0)
