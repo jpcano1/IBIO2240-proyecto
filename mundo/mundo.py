@@ -8,13 +8,13 @@ parametros.loc["Theta_i"] = parametros.loc["Theta_i"] * np.pi
 def w_t(t):
     return 2 * np.pi * np.random.uniform(55, 65, len(t))
 
-def x_dot(x, y, w):
+def x_dot(x, y, trr):
     alpha = 1 - np.sqrt(x**2 + y**2)
-    return alpha*x - w*y
+    return alpha * x - (2. * np.pi / trr) * y
 
-def y_dot(x, y, w):
+def y_dot(x, y, trr):
     alpha = 1 - np.sqrt(x**2 + y**2)
-    return alpha*y + w*x
+    return alpha * y + (2 * np.pi / trr) * x
 
 def z_dot(x, y, z, t, *args):
     theta = np.arctan2(y, x)
@@ -22,15 +22,15 @@ def z_dot(x, y, z, t, *args):
     for arg in args:
         a_i = parametros.loc["a_i", arg]; b_i = parametros.loc["b_i", arg]
         theta_i = parametros.loc["Theta_i", arg]
-        delta_theta_i = (theta - theta_i) % 2 * np.pi
+        delta_theta_i = (theta - theta_i) % (2 * np.pi)
         result += a_i * delta_theta_i * np.exp(-(delta_theta_i**2 / (2 * b_i**2)))
-    return  - (result - (z - z_0(t)))
+    return  - result - (z - z_0(t))
 
 def z_0(t):
     A = 0.15
     return A * np.sin(2 * np.pi* 0.25 * t)
 
-h = 0.001
+h = 0.0001
 t_0 = parametros.loc["Time", "P"]
 t_f = parametros.loc["Time", "T"]
 T = np.arange(t_0, t_f + h, h)
@@ -44,8 +44,8 @@ y_euler[0] = y1
 z_euler[0] = z1
 
 for i in range(1, len(T)):
-    x_euler[i] = x_euler[i - 1] + h * x_dot(x_euler[i - 1], y_euler[i - 1], Ws[i-1])
-    y_euler[i] = y_euler[i-1] + h * y_dot(x_euler[i - 1], y_euler[i - 1], Ws[i-1])
+    x_euler[i] = x_euler[i - 1] + h * x_dot(x_euler[i - 1], y_euler[i - 1], T[i-1])
+    y_euler[i] = y_euler[i-1] + h * y_dot(x_euler[i - 1], y_euler[i - 1], T[i-1])
     z_euler[i] = z_euler[i-1] + h * z_dot(x_euler[i - 1], y_euler[i - 1], z_euler[i - 1], T[i - 1], *("P", "Q", "R", "S", "T"))
 
 plt.plot(T, z_euler)
