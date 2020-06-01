@@ -4,6 +4,9 @@ import pandas as pd
 parametros = pd.read_excel("../data/parametros.xlsx", index_col=0)
 parametros.loc["Theta_i"] = parametros.loc["Theta_i"] * np.pi
 
+def w_t():
+    return 2 * np.pi * np.random.uniform(55, 65)
+
 def x_dot(x, y, w):
     alpha = 1 - np.sqrt(x**2 + y**2)
     return alpha*x - w*y
