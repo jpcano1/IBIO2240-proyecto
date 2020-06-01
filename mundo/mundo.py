@@ -30,9 +30,9 @@ def z_dot(x, y, z, t):
 
 def z0(t):
     A = 0.15
-    return A * np.sin(2 * np.pi* 0.25 * t)
+    return A * np.sin(2. * np.pi* 0.25 * t)
 
-def euler_for(h=0.01, x_0=1, y_0=0, z_0=0, t_0=0, t_f=1):
+def euler_for(h=0.001, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
     T = np.arange(t_0, t_f + h, h)
     x_euler = np.zeros(len(T))
     Ws = w_t(T)
