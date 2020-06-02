@@ -5,6 +5,7 @@ from interfaz.panel_opciones import PanelOpciones
 from interfaz.panel_senales import PanelSenales
 from interfaz.panel_puntos import PanelPuntos
 from mundo.ecg_generator import ECGGenerator
+from PIL import ImageTk ,Image
 
 class InterfazProyecto(Tk):
 
@@ -33,6 +34,12 @@ class InterfazProyecto(Tk):
         self.panel_puntos = PanelPuntos(self)
         self.panel_puntos.grid(row=2, column=0)
         self.panel_puntos.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
+
+        self.img=Image.open("../images.jpg")
+        self.img=self.img.resize((100, 100))
+        self.img = ImageTk.PhotoImage(self.img)
+        self.lab = Label(image=self.img)
+        self.lab.place(x=710, y=480)
 
     def updatePoints(self):
         return self.ecg.a_i,self.ecg.b_i

@@ -43,3 +43,4 @@ class PanelMetodos(Frame):
                                               activeforeground='#00ff41', selectcolor='#212946',
                                               value="RK4", variable=self.var_metodo)
         self.radio_runge_kutta4.pack(expand=True, fill='both')
+
