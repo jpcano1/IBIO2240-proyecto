@@ -19,11 +19,11 @@ class PanelSenales(Frame):
         self.plot_canvas()
 
         # HR
-        self.button_hr = Button(master=self, text="Hallar HR",background='#F5D300', foreground="#212946", font=('calibri', 15, 'bold'),borderwidth='4')
-        self.button_hr.pack(side=LEFT)
-
         self.text_hr = Entry(master=self,background='#212946',foreground='#dad0c0',insertbackground='#dad0c0')
-        self.text_hr.pack(side=RIGHT)
+        self.text_hr.pack()
+
+        self.button_hr = Button(master=self, text="Hallar HR",background='#F5D300', foreground="#212946", font=('calibri', 12, 'bold'),borderwidth='4')
+        self.button_hr.pack()
 
     def plot_canvas(self):
         x = np.linspace(0, 2*np.pi, 1000)
