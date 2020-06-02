@@ -1,5 +1,4 @@
 from tkinter import *
-import tkinter.ttk as ttk
 class PanelMetodos(Frame):
 
     def __init__(self, pInterfaz):
