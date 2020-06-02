@@ -33,9 +33,9 @@ class ECGGenerator:
 
     def z_dot(self, x, y, z, t):
         theta = np.arctan2(y, x)
-
+        A = 1.5 * 10 ** (-4)
         delta_i = np.fmod(theta - self.theta_i, 2 * np.pi)
-        zbase = 0.005 * np.sin(2 * np.pi * 0.25 * t)
+        zbase = A * np.sin(2 * np.pi * 0.25 * t)
         result = -sum(self.a_i * delta_i * np.exp(-0.5 * (delta_i / self.b_i) ** 2)) - (z - zbase)
         return result
 
