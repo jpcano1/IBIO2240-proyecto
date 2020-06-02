@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from scipy.signal import find_peaks
+
 import struct as st
 
 parametros = pd.read_excel("../data/parametros.xlsx", index_col=0)
@@ -76,3 +78,16 @@ class ECGGenerator:
             file.close()
         except FileNotFoundError as e:
             raise e
+
+    def heart_rate(self, fm=360):
+        peaks, _ = find_peaks(self.points, height=0.03)
+        return fm, peaks
+
+# ecg = ECGGenerator()
+# plt.plot(ecg.interval, ecg.points)
+# fs = 360
+# time = np.arange(len(ecg.points)) / fs
+# peaks, _ = find_peaks(ecg.points, height=0.03)
+# plt.plot(time, ecg.points)
+# plt.plot(peaks/fs, np.array(ecg.points)[peaks], "sr")
+# plt.show()

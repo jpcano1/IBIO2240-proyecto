@@ -46,6 +46,7 @@ class InterfazProyecto(Tk):
 
     def plot(self):
         self.panel_senales.plot_canvas(self.ecg.interval,self.ecg.points)
+
     def getXY(self):
         return self.ecg.interval,self.ecg.points
 if __name__ == '__main__':
