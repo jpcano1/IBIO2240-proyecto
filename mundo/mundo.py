@@ -87,3 +87,24 @@ T, z_euler = euler_back()
 plt.plot(T, z_euler)
 plt.grid(linestyle="--")
 plt.show()
+
+def euler_mod(h=0.001, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
+    T = np.arange(t_0, t_f + h, h)
+    x_euler = np.zeros(len(T))
+    Ws = w_t(T)
+    y_euler = np.zeros(len(T))
+    z_euler = np.zeros(len(T))
+    x_euler[0] = x_0;
+    y_euler[0] = y_0;
+    z_euler[0] = z_0
+    for i in range(1, len(T)):
+        x_euler[i] = (x_euler[i - 1] + (h/2.0) * x_dot(x_euler[i - 1], y_euler[i - 1])) / x_dot(x_euler[i], h)
+        y_euler[i] = (y_euler[i - 1] + (h/2.0) * y_dot(x_euler[i - 1], y_euler[i - 1])) / y_dot(x_euler[i], h)
+        z_euler[i] = (z_euler[i - 1] + (h/2.0) * z_dot(x_euler[i - 1], y_euler[i - 1])) / z_dot(x_euler[i], h)
+    return T, z_euler
+
+T, z_euler = euler_mod()
+
+plt.plot(T, z_euler)
+plt.grid(linestyle="--")
+plt.show()
