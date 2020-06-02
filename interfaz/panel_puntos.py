@@ -14,13 +14,59 @@ class PanelPuntos(Frame):
         self.variables_a = np.array([BooleanVar(self) for i in range(len(label_list))])
         self.variables_b = np.array([BooleanVar(self) for i in range(len(label_list))])
 
-        for i in range(len(label_list)):
-            Label(self, text=label_list[i],background='#212946',foreground='#08F7FE').grid(row=0, column=(i+1))
-            Checkbutton(self, variable=self.variables_a[i],background='#212946',
-                                              foreground='#00ff41', activebackground='#212946',
-                                              activeforeground='#00ff41', selectcolor='#212946',).grid(row=1, column=(i+1))
-            Checkbutton(self, variable=self.variables_b[i],background='#212946',
-                                              foreground='#00ff41', activebackground='#212946',
-                                              activeforeground='#00ff41', selectcolor='#212946',).grid(row=2, column=(i+1))
+
+
+        Label(self, text="P",background='#212946',foreground='#08F7FE').grid(row=0, column=1)
+
+        self.p_a = Entry(master=self, background='#212946', foreground='#dad0c0',
+                                      insertbackground='#dad0c0')
+        self.p_a.grid(row=1, column=1)
+
+        self.p_b = Entry(master=self, background='#212946', foreground='#dad0c0',
+                                      insertbackground='#dad0c0')
+        self.p_b.grid(row=2, column=1)
+
+        Label(self, text="Q",background='#212946',foreground='#08F7FE').grid(row=0, column=2)
+
+        self.q_a = Entry(master=self, background='#212946', foreground='#dad0c0',
+                                      insertbackground='#dad0c0')
+        self.q_a.grid(row=1, column=2)
+
+        self.q_b = Entry(master=self, background='#212946', foreground='#dad0c0',
+                                      insertbackground='#dad0c0')
+        self.q_b.grid(row=2, column=2)
+
+
+        Label(self, text="R",background='#212946',foreground='#08F7FE').grid(row=0, column=3)
+
+        self.r_a = Entry(master=self, background='#212946', foreground='#dad0c0',
+                                      insertbackground='#dad0c0')
+        self.r_a.grid(row=1, column=3)
+
+        self.r_b = Entry(master=self, background='#212946', foreground='#dad0c0',
+                                      insertbackground='#dad0c0')
+        self.r_b.grid(row=2, column=3)
+
+        Label(self, text="S",background='#212946',foreground='#08F7FE').grid(row=0, column=4)
+
+        self.s_a = Entry(master=self, background='#212946', foreground='#dad0c0',
+                                      insertbackground='#dad0c0')
+        self.s_a.grid(row=1, column=4)
+
+        self.s_b = Entry(master=self, background='#212946', foreground='#dad0c0',
+                                      insertbackground='#dad0c0')
+        self.s_b.grid(row=2, column=4)
+
+        Label(self, text="T",background='#212946',foreground='#08F7FE').grid(row=0, column=5)
+
+        self.t_a = Entry(master=self, background='#212946', foreground='#dad0c0',
+                                      insertbackground='#dad0c0')
+        self.t_a.grid(row=1, column=5)
+
+        self.t_b = Entry(master=self, background='#212946', foreground='#dad0c0',
+                                      insertbackground='#dad0c0')
+        self.t_b.grid(row=2, column=5)
+
+
         Label(self, text="a_i",background='#212946', foreground='#FE53BB').grid(row=1, column=0)
         Label(self, text="b_i",background='#212946', foreground='#FE53BB').grid(row=2, column=0)
