@@ -34,27 +34,22 @@ class PanelSenales(Frame):
         for param in ['figure.facecolor', 'axes.facecolor', 'savefig.facecolor']:
             plt.rcParams[param] = '#212946'  # bluish dark grey
         colors = [
-            '#FE53BB',  # pink
             '#08F7FE',  # teal/cyan
-            '#F5D300',  # yellow
             '#00ff41',  # matrix green
         ]
 
         df = pd.DataFrame({'y':y})
         fig, ax = plt.subplots()
-        df.plot( color=colors, ax=ax,linewidth=3)
+        ax.plot(x, y, color=colors[0], linewidth=1.4)
 
         # Redraw the data with low alpha and slighty increased linewidth:
         n_shades = 10
-        diff_linewidth = 1.05
+        diff_linewidth = 0.5
         alpha_value = 0.3 / n_shades
         for n in range(1, n_shades + 1):
-            df.plot(
-                    linewidth=2 + (diff_linewidth * n),
+            ax.plot(x, y, linewidth=2 + (diff_linewidth * n),
                     alpha=alpha_value,
-                    legend=False,
-                    ax=ax,
-                    color=colors)
+                    color=colors[0])
 
         # Color the areas below the lines:
         for column, color in zip(df, colors):
@@ -64,10 +59,9 @@ class PanelSenales(Frame):
                     color=color,
                     alpha=0.1)
 
-        ax.grid(color='#2A3459',linewidth=1.5)
+        ax.grid(color='#2A3459',linewidth=1.5, linestyle="--")
 
-        ax.set_xlim(0,1000)  # to not have the markers cut off
-        ax.set_ylim(min(y),max(y))
+        ax.set_xlim(min(x), max(x))  # to not have the markers cut off
         canvas = FigureCanvasTkAgg(figure=fig, master=self)
         canvas.draw()
         canvas.get_tk_widget().pack()
