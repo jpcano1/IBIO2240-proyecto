@@ -83,13 +83,29 @@ def euler_mod(h=0.001, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
 # plt.grid(linestyle="--")
 # plt.show()
 
-def rk2(func, h=0.01, y_0=0.01, t_0=0., t_f=30.):
+def rk2(h=0.001, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
     T = np.arange(t_0, t_f + h, h)
-    y_rk2=np.zeros(len(T))
-    y_rk2[0]=y_0
-    for i in range(1,len(T)):
-        k1=func(T[i - 1], y_rk2[i - 1])
-        k2=func(T[i - 1] + h, y_rk2[i - 1] + k1 * h)
-        y_rk2=y_rk2[i-1]+(h/2.0)*(k1+k2)
+    x_rk2 = np.zeros(len(T))
+    y_rk2 = np.zeros(len(T))
+    z_rk2 = np.zeros(len(T))
+    Ws = w_t(T)
+    x_rk2[0] = x_0
+    y_rk2[0] = y_0
+    z_rk2[0] = z_0
+    for i in range(1, len(T)):
+        x_k1 = x_dot(x_rk2[i - 1], x_rk2[i - 1], Ws[i - 1])
+        x_k2 = x_dot(x_rk2[i - 1] + h, x_rk2[i - 1] + x_k1 * h, Ws[i - 1])
+        x_rk2 = x_rk2[i - 1] + (h / 2.0) * (x_k1 + x_k2)
+        y_k1 = y_dot(y_rk2[i - 1], y_rk2[i - 1], Ws[i - 1])
+        y_k2 = y_dot(y_rk2[i - 1] + h, y_rk2[i - 1] + y_k1 * h, Ws[i - 1])
+        y_rk2 = y_rk2[i - 1] + (h / 2.0) * (y_k1 + y_k2)
+        z_k1 = z_dot(z_rk2[i - 1], z_rk2[i - 1], z_rk2[i - 1], T[i - 1])
+        z_k2 = z_dot(z_rk2[i - 1] + h, z_rk2[i - 1] + z_k1 * h, z_rk2[i - 1], T[i - 1])
+        z_rk2 = z_rk2[i - 1] + (h / 2.0) * (z_k1 + z_k2)
+    return T, z_rk2
 
-    return T, y_rk2
+T, z_rk2 = rk2()
+
+plt.plot(T, z_rk2)
+plt.grid(linestyle="--")
+plt.show()
