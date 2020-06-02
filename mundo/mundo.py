@@ -16,19 +16,13 @@ def y_dot(x, y, trr):
     alpha = 1 - np.sqrt(x**2 + y**2)
     return alpha * y + (2 * np.pi / trr) * x
 
-def z_dot(x, y, z, t):
+def z_dot(x, y, z, t, a_i = parametros.loc["a_i"], b_i = parametros.loc["b_i"], theta_i = parametros.loc["Theta_i"]):
     theta = np.arctan2(y, x)
-    a_i = parametros.loc["a_i"]
-    b_i = parametros.loc["b_i"]
-    theta_i = parametros.loc["Theta_i"]
+
     delta_i = np.fmod(theta - theta_i, 2 * np.pi)
     zbase = 0.005 * np.sin(2 * np.pi * 0.25 * t)
     result = -sum(a_i * delta_i * np.exp(-0.5 * (delta_i / b_i) ** 2)) - (z - zbase)
     return result
-
-def z0(t):
-    A = 0.15
-    return A * np.sin(2. * np.pi* 0.25 * t)
 
 def euler_for(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
     T = np.arange(t_0, t_f + h, h)
