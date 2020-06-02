@@ -65,8 +65,9 @@ class PanelSenales(Frame):
                     alpha=0.1)
 
         ax.grid(color='#2A3459',linewidth=1.5)
+
         ax.set_xlim(0,1000)  # to not have the markers cut off
-        ax.set_ylim(-1/2,1/2)
+        ax.set_ylim(min(y),max(y))
         canvas = FigureCanvasTkAgg(figure=fig, master=self)
         canvas.draw()
         canvas.get_tk_widget().pack()
