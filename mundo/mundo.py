@@ -37,12 +37,6 @@ def euler_for(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
         z_euler[i] = z_euler[i - 1] + h * z_dot(x_euler[i - 1], y_euler[i - 1], z_euler[i - 1], T[i - 1])
     return T, z_euler
 
-T, z_euler = euler_for()
-
-plt.plot(T, z_euler)
-plt.grid(linestyle="--")
-plt.show()
-
 def euler_back(h=0.01, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
     T = np.arange(t_0, t_f + h, h)
     x_euler = np.zeros(len(T))
@@ -83,7 +77,7 @@ def euler_mod(h=0.001, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
 # plt.grid(linestyle="--")
 # plt.show()
 
-def rk2(h=0.001, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
+def rk2(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
     T = np.arange(t_0, t_f + h, h)
     x_rk2 = np.zeros(len(T))
     y_rk2 = np.zeros(len(T))
@@ -93,15 +87,21 @@ def rk2(h=0.001, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
     y_rk2[0] = y_0
     z_rk2[0] = z_0
     for i in range(1, len(T)):
-        x_k1 = x_dot(x_rk2[i - 1], x_rk2[i - 1], Ws[i - 1])
-        x_k2 = x_dot(x_rk2[i - 1] + h, x_rk2[i - 1] + x_k1 * h, Ws[i - 1])
-        x_rk2 = x_rk2[i - 1] + (h / 2.0) * (x_k1 + x_k2)
-        y_k1 = y_dot(y_rk2[i - 1], y_rk2[i - 1], Ws[i - 1])
-        y_k2 = y_dot(y_rk2[i - 1] + h, y_rk2[i - 1] + y_k1 * h, Ws[i - 1])
-        y_rk2 = y_rk2[i - 1] + (h / 2.0) * (y_k1 + y_k2)
-        z_k1 = z_dot(z_rk2[i - 1], z_rk2[i - 1], z_rk2[i - 1], T[i - 1])
-        z_k2 = z_dot(z_rk2[i - 1] + h, z_rk2[i - 1] + z_k1 * h, z_rk2[i - 1], T[i - 1])
-        z_rk2 = z_rk2[i - 1] + (h / 2.0) * (z_k1 + z_k2)
+        x_k1 = x_dot(x_rk2[i-1], y_rk2[i-1], Ws[i-1])
+        y_k1 = x_dot(x_rk2[i-1], y_rk2[i-1], Ws[i-1])
+        z_k1 = z_dot(x_rk2[i-1], y_rk2[i-1], z_rk2[i-1], Ws[i-1])
+
+        x_k2 = x_dot(x_rk2[i-1] + x_k1 * h, y_rk2[i-1] + y_k1 * h,
+                     Ws[i-1] + h)
+        y_k2 = y_dot(x_rk2[i-1] + x_k1 * h, y_rk2[i-1] + y_k1 * h,
+                     Ws[i-1] + h)
+        z_k2 = z_dot(x_rk2[i-1] + x_k1 * h, y_rk2[i-1] + y_k1 * h,
+                     z_rk2[i-1] + z_k1 * h, Ws[i-1] + h)
+
+        x_rk2[i] = x_rk2[i-1] + (h / 2.) * (x_k1 + x_k2)
+        y_rk2[i] = y_rk2[i-1] + (h / 2.) * (y_k1 + y_k2)
+        z_rk2[i] = z_rk2[i-1] + (h / 2.) * (z_k1 + z_k2)
+
     return T, z_rk2
 
 T, z_rk2 = rk2()

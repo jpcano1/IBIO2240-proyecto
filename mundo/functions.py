@@ -86,6 +86,6 @@ def rk2(func, h=0.01, y_0=0.01, t_0=0., t_f=30.):
     for i in range(1,len(T)):
         k1=func(T[i - 1], y_rk2[i - 1])
         k2=func(T[i - 1] + h, y_rk2[i - 1] + k1 * h)
-        y_rk2=y_rk2[i-1]+(h/2.0)*(k1+k2)
+        y_rk2[i]=y_rk2[i-1]+(h/2.0)*(k1+k2)
 
     return T, y_rk2
