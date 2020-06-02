@@ -18,9 +18,9 @@ def y_dot(x, y, trr):
 
 def z_dot(x, y, z, t, a_i = parametros.loc["a_i"], b_i = parametros.loc["b_i"], theta_i = parametros.loc["Theta_i"]):
     theta = np.arctan2(y, x)
-
+    A = 1.5 * 10 ** (-4)
     delta_i = np.fmod(theta - theta_i, 2 * np.pi)
-    zbase = 0.005 * np.sin(2 * np.pi * 0.25 * t)
+    zbase = A * np.sin(2 * np.pi * 0.25 * t)
     result = -sum(a_i * delta_i * np.exp(-0.5 * (delta_i / b_i) ** 2)) - (z - zbase)
     return result
 
