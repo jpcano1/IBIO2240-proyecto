@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+import struct as st
+
 parametros = pd.read_excel("../data/parametros.xlsx", index_col=0)
 parametros.loc["Theta_i"] = parametros.loc["Theta_i"] * np.pi
 
@@ -51,5 +53,26 @@ class ECGGenerator:
         self.interval = T; self.points = z_euler
         return
 
-    def save_points(self, file=""):
-        pass
+    def save_points(self, points_path="points.bin", interval_path="interval.bin"):
+        file = open(points_path, "wb")
+        var1 = st.pack("d"*int(len(self.points)), *self.points)
+        file.write(var1)
+        file.close()
+        file = open(interval_path, "wb")
+        var1 = st.pack("d"*int(len(self.interval)), *self.interval)
+        file.write(var1)
+        file.close()
+        return
+
+    def load_points(self, points_path="points.bin", interval_path="interval.bin"):
+        try:
+            file = open(points_path, "rb")
+            var1 = file.read()
+            self.points = st.unpack("d"*int(len(var1)/8), var1)
+            file.close()
+            file = open(interval_path, "rb")
+            var1 = file.read()
+            self.interval = st.unpack("d" * int(len(var1) / 8), var1)
+            file.close()
+        except FileNotFoundError as e:
+            raise e
