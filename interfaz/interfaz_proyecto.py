@@ -60,7 +60,6 @@ class InterfazProyecto(Tk):
         else:
             self.ecg.rk4()
             self.panel_senales.plot_canvas(self.ecg.interval, self.ecg.points)
-
     def getXY(self):
         return self.ecg.interval,self.ecg.points
 
