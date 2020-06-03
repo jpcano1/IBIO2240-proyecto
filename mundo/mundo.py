@@ -9,12 +9,12 @@ def w_t(t):
     return np.random.uniform(0.98, 1.1, len(t))
 
 def x_dot(x, y, trr):
-    alpha = 1 - np.sqrt(x**2 + y**2)
+    alpha = 1. - np.sqrt(x**2. + y**2.)
     return alpha * x - (2. * np.pi / trr) * y
 
 def y_dot(x, y, trr):
-    alpha = 1 - np.sqrt(x**2 + y**2)
-    return alpha * y + (2 * np.pi / trr) * x
+    alpha = 1. - np.sqrt(x**2. + y**2.)
+    return alpha * y + (2. * np.pi / trr) * x
 
 def z_dot(x, y, z, t, a_i = parametros.loc["a_i"], b_i = parametros.loc["b_i"], theta_i = parametros.loc["Theta_i"]):
     theta = np.arctan2(y, x)
@@ -24,7 +24,21 @@ def z_dot(x, y, z, t, a_i = parametros.loc["a_i"], b_i = parametros.loc["b_i"], 
     result = -sum(a_i * delta_i * np.exp(-0.5 * (delta_i / b_i) ** 2)) - (z - zbase)
     return result
 
-def euler_for(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
+def euler_back(h=0.01, x_0=1., y_0=0., z_0=0.04, t_0=0., t_f=10.):
+    T = np.arange(t_0, t_f + h, h)
+    x_euler = np.zeros(len(T))
+    Ws = w_t(T)
+    y_euler = np.zeros(len(T))
+    z_euler = np.zeros(len(T))
+    x_euler[0] = x_0; y_euler[0] = y_0; z_euler[0] = z_0
+    """y_n=y_n-1+h*f(y_n,t_n)"""
+    for i in range(1, len(T)):
+        x_euler[i] = x_euler[i - 1] + h * x_dot(x_euler[i-1], y_euler[i-1], Ws[i])#O WS[i-1]?
+        y_euler[i] = y_euler[i - 1] + h * y_dot(x_euler[i-1], y_euler[i-1], Ws[i])
+        z_euler[i] = z_euler[i - 1] + h * z_dot(x_euler[i], y_euler[i], z_euler[i], T[i])
+    return T, z_euler
+
+def euler_for(h=0.01, x_0=1., y_0=0., z_0=0.04, t_0=0., t_f=10.):
     T = np.arange(t_0, t_f + h, h)
     x_euler = np.zeros(len(T))
     Ws = w_t(T)
@@ -32,26 +46,22 @@ def euler_for(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
     z_euler = np.zeros(len(T))
     x_euler[0] = x_0; y_euler[0] = y_0; z_euler[0] = z_0
     for i in range(1, len(T)):
+        """y_n=y_n-1+h*f(y_n-1,t_n-1)""" #MELO
         x_euler[i] = x_euler[i - 1] + h * x_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1])
         y_euler[i] = y_euler[i - 1] + h * y_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1])
         z_euler[i] = z_euler[i - 1] + h * z_dot(x_euler[i - 1], y_euler[i - 1], z_euler[i - 1], T[i - 1])
     return T, z_euler
 
-def euler_back(h=0.01, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
-    T = np.arange(t_0, t_f + h, h)
-    x_euler = np.zeros(len(T))
-    Ws = w_t(T)
-    y_euler = np.zeros(len(T))
-    z_euler = np.zeros(len(T))
-    x_euler[0] = x_0; y_euler[0] = y_0; z_euler[0] = z_0
-    for i in range(1, len(T)):
-        x_euler[i] = x_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1])
-        y_euler[i] = y_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1])
-        z_euler[i] = z_dot(x_euler[i - 1], y_euler[i - 1], z_euler[i - 1], T[i - 1])
-    return T, z_euler
+T, z_euler = euler_back()
+plt.plot(T, z_euler, "-")
+plt.grid(linestyle="--")
+plt.title("BACKWARD")
+plt.show()
 
-# T, z_euler = euler_back()
-#
+T2, z_euler2 = euler_for()
+print(T-T2,z_euler-z_euler2)
+
+# plt.title("FORWARD")
 # plt.plot(T, z_euler, "-")
 # plt.grid(linestyle="--")
 # plt.show()
@@ -104,11 +114,11 @@ def rk2(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
 
     return T, z_rk2
 
-T, z_rk2 = rk2()
-
-plt.plot(T, z_rk2)
-plt.grid(linestyle="--")
-plt.show()
+# T, z_rk2 = rk2()
+#
+# plt.plot(T, z_rk2)
+# plt.grid(linestyle="--")
+# plt.show()
 
 def rk4(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
     T = np.arange(t_0, t_f + h, h)

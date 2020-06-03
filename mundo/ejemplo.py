@@ -119,9 +119,12 @@ for iter in range(1, len(T)):
                       h * F2(T[iter - 1], Y1EulerFor[iter - 1],
                              Y2EulerFor[iter - 1])
     # Euler hacia atrás
+
     Y2EulerBack[iter] = F2EulerBack(T[iter], Y1EulerBack[iter - 1],
                                     Y2EulerBack[iter - 1], h)
     Y1EulerBack[iter] = Y1EulerBack[iter - 1] + h * F1(Y2EulerBack[iter])
+
+
     # Euler modificado
     Y2EulerMod[iter] = F2EulerMod(T[iter - 1], T[iter],
                                   Y1EulerMod[iter - 1],
