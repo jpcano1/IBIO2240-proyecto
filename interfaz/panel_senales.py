@@ -19,8 +19,6 @@ class PanelSenales(Frame):
         # Canvas Plot
         x,y=self.interfaz.getXY()
 
-        self.plot_canvas(x,y,True)
-
         # HR
         self.text_hr = Entry(master=self,background='#212946',foreground='#dad0c0',insertbackground='#dad0c0')
         self.text_hr.pack()
@@ -28,9 +26,12 @@ class PanelSenales(Frame):
         self.button_hr = Button(master=self, text="Hallar HR",background='#F5D300', foreground="#212946", font=('calibri', 12, 'bold'),borderwidth='4')
         self.button_hr.pack()
 
+        self.plot_canvas(x,y,True)
+
     def plot_canvas(self,x,y,create=False):
         if not create:
             self.canvas.get_tk_widget().pack_forget()
+
         plt.style.use("dark_background")
         for param in ['text.color', 'axes.labelcolor', 'xtick.color', 'ytick.color']:
             plt.rcParams[param] = '0.9'  # very light grey
