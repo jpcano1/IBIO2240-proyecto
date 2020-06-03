@@ -12,6 +12,15 @@ parametros.loc["Theta_i"] = parametros.loc["Theta_i"] * np.pi
 class ECGGenerator:
 
     def __init__(self, fs=1., hr_mean=60., hr_std=1., noise=0.):
+        """
+        Inicializa el electrocardiograma con valores predeterminados
+        :param fs: Frecuencia de muestreo
+        :param hr_mean: Promedio de frecuencia cardíaca
+        :param hr_std: Desviación estándar de la frecuencia
+        cardíaca
+        :param noise: Factor de ruido
+        """
+        # Parámetros de a_i y b_i
         self.a_i = np.array([1.2, -5, 30, -7.5, 0.75])
         self.b_i = np.array([0.25, 0.1, 0.1, 0.1, 0.4])
         self.theta_i = np.array([-1/3, -1/12, 0, 1/12, 0.5]) * np.pi
@@ -22,24 +31,50 @@ class ECGGenerator:
         self.hr_mean = hr_mean
         self.hr_std = hr_std
         self.noise = noise
+        # Inicializa con Euler Forward
         self.euler_forward()
 
     def w_t(self, t):
+        """
+        Calcula el período basado en la media
+        y las desviación de la frecuencia cardíaca
+        :param t: El vector con los tiempos
+        :return: El vector de períodos
+        """
         rr_mean = 60 / self.hr_mean
         rr_std = 60 * self.hr_std / self.hr_mean**2
         return rr_mean + np.random.randn(len(t)) * rr_std
 
     @staticmethod
     def x_dot(x, y, trr):
+        """
+        Ecuación diferencial de x
+        :param x: Parámetro x
+        :param y: Parámetro y
+        :param trr: período
+        """
         alpha = 1 - np.sqrt(x ** 2 + y ** 2)
         return alpha * x - (2. * np.pi / trr) * y
 
     @staticmethod
     def y_dot(x, y, trr):
+        """
+        Ecuación diferencial de y
+        :param x: Parámetroo x
+        :param y: Parámetro y
+        :param trr: Período
+        """
         alpha = 1 - np.sqrt(x ** 2 + y ** 2)
         return alpha * y + (2 * np.pi / trr) * x
 
     def z_dot(self, x, y, z, t):
+        """
+        Ecuación diferencial de z
+        :param x: Parámetro x
+        :param y: Parámetro y
+        :param z: Parámetro z
+        :param t: Vector con los tiempos
+        """
         theta = np.arctan2(y, x)
         A = 1.5 * 10 ** (-4)
         delta_i = np.fmod(theta - self.theta_i, 2 * np.pi)
@@ -48,6 +83,17 @@ class ECGGenerator:
         return result
 
     def euler_forward(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
+        """
+        Algoritmo que soluciona ecuaciones diferenciales
+        por el método de euler hacia adelante
+        :param h: el avance
+        :param x_0: Parámetro x inicial
+        :param y_0: Parámetro y inicial
+        :param z_0: Parámetro z inicial
+        :param t_0: Tiempo inicial
+        :param t_f: Tiempo final
+        :return: Un vector con los puntos de la solución
+        """
         T = np.arange(t_0, t_f + h, h)
         x_euler = np.zeros(len(T))
         Ws = self.w_t(T)
@@ -64,6 +110,17 @@ class ECGGenerator:
         return
 
     def euler_backward(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
+        """
+        Algoritmo que soluciona ecuaciones diferenciales
+        por el método de euler hacia atrás
+        :param h: el avance
+        :param x_0: Parámetro x inicial
+        :param y_0: Parámetro y inicial
+        :param z_0: Parámetro z inicial
+        :param t_0: Tiempo inicial
+        :param t_f: Tiempo final
+        :return: Un vector con los puntos de la solución
+        """
         T = np.arange(t_0, t_f + h, h)
         x_euler = np.zeros(len(T))
         Ws = self.w_t(T)
@@ -82,6 +139,17 @@ class ECGGenerator:
         return
 
     def rk2(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
+        """
+        Algoritmo que soluciona ecuaciones diferenciales
+        por el método de Runge-Kutta de segundo orden
+        :param h: el avance
+        :param x_0: Parámetro x inicial
+        :param y_0: Parámetro y inicial
+        :param z_0: Parámetro z inicial
+        :param t_0: Tiempo inicial
+        :param t_f: Tiempo final
+        :return: Un vector con los puntos de la solución
+        """
         T = np.arange(t_0, t_f + h, h)
         x_rk2 = np.zeros(len(T))
         y_rk2 = np.zeros(len(T))
@@ -110,6 +178,17 @@ class ECGGenerator:
         return
 
     def rk4(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
+        """
+        Algoritmo que soluciona ecuaciones diferenciales
+        por el método de Runge-Kutta de cuarto orden
+        :param h: el avance
+        :param x_0: Parámetro x inicial
+        :param y_0: Parámetro y inicial
+        :param z_0: Parámetro z inicial
+        :param t_0: Tiempo inicial
+        :param t_f: Tiempo final
+        :return: Un vector con los puntos de la solución
+        """
         T = np.arange(t_0, t_f + h, h)
         x_rk4 = np.zeros(len(T))
         y_rk4 = np.zeros(len(T))
@@ -165,6 +244,12 @@ class ECGGenerator:
         return
 
     def save_points(self, points_path="points.bin", interval_path="interval.bin"):
+        """
+        Salva los puntos de la gráfica al igual que el
+        rango donde se evalúa
+        :param points_path: Ruta del archivo de puntos
+        :param interval_path: Ruta del archivo del intervalo
+        """
         file = open(points_path, "wb")
         var1 = st.pack("d"*int(len(self.points)), *self.points)
         file.write(var1)
@@ -176,6 +261,14 @@ class ECGGenerator:
         return
 
     def load_points(self, points_path="points.bin", interval_path="interval.bin"):
+        """
+        Carga los puntos de la gráfica, al igual que
+        su rango de evaluación
+        :param points_path: Ruta del archivo de puntos
+        :param interval_path: Ruta del archivo del intervalo
+        :except FileNotFoundError: Excepción generada si el archivo
+        no existe
+        """
         try:
             file = open(points_path, "rb")
             var1 = file.read()
