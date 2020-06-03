@@ -50,30 +50,33 @@ class InterfazProyecto(Tk):
         fruido=self.panel_parametros.factor_ruido_input.get()
         latidos=self.panel_parametros.latidos_input.get()
 
-        if(fcardiaca!=""):
-            self.ecg.fs=float(fcardiaca)#Reemplazar
-        if (fmuestreo != ""):
-            self.ecg.fs = float(fmuestreo)
-        if (fruido != ""):
-            self.ecg.noise = float(fruido)
-        if (latidos != ""):
-            self.ecg.fs = float(latidos)#Reemplazar
+        num_latidos = 10
 
-        if(self.panel_metodos.getSelected()=="EA"):
-            self.ecg.euler_forward()
+        if fcardiaca!= "":
+            self.ecg.hr_mean = float(fcardiaca)
+        if fmuestreo != "":
+            self.ecg.fs = float(fmuestreo)
+        if fruido != "":
+            self.ecg.noise = float(fruido)
+        if latidos != "":
+            num_latidos = float(latidos)
+
+        if self.panel_metodos.getSelected() == "EA":
+            self.ecg.euler_forward(t_f=num_latidos)
             self.panel_senales.plot_canvas(self.ecg.interval,self.ecg.points)
-        elif(self.panel_metodos.getSelected()=="EAT"):
-            self.ecg.euler_backward()
+        elif self.panel_metodos.getSelected()== "EAT":
+            self.ecg.euler_backward(t_f=num_latidos)
             self.panel_senales.plot_canvas(self.ecg.interval,self.ecg.points)
-        elif (self.panel_metodos.getSelected() == "EM"):
+        elif self.panel_metodos.getSelected() == "EM":
             #self.ecg.euler_modificado()
             self.panel_senales.plot_canvas(self.ecg.interval, self.ecg.points)
-        elif (self.panel_metodos.getSelected() == "RK2"):
-            self.ecg.rk2()
+        elif self.panel_metodos.getSelected() == "RK2":
+            self.ecg.rk2(t_f=num_latidos)
             self.panel_senales.plot_canvas(self.ecg.interval, self.ecg.points)
         else:
-            self.ecg.rk4()
+            self.ecg.rk4(t_f=num_latidos)
             self.panel_senales.plot_canvas(self.ecg.interval, self.ecg.points)
+
     def getXY(self):
         return self.ecg.interval,self.ecg.points
 
