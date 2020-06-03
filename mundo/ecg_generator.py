@@ -11,7 +11,7 @@ parametros.loc["Theta_i"] = parametros.loc["Theta_i"] * np.pi
 
 class ECGGenerator:
 
-    def __init__(self, fs=1, hr_mean=60, hr_std=1):
+    def __init__(self, fs=1., hr_mean=60., hr_std=1., noise=0.):
         self.a_i = np.array([1.2, -5, 30, -7.5, 0.75])
         self.b_i = np.array([0.25, 0.1, 0.1, 0.1, 0.4])
         self.theta_i = np.array([-1/3, -1/12, 0, 1/12, 0.5]) * np.pi
@@ -21,6 +21,7 @@ class ECGGenerator:
         self.fs = fs
         self.hr_mean = hr_mean
         self.hr_std = hr_std
+        self.noise = noise
         self.euler_forward()
 
     def w_t(self, t):
@@ -59,7 +60,7 @@ class ECGGenerator:
             z_euler[i] = z_euler[i - 1] + h * self.z_dot(x_euler[i - 1], y_euler[i - 1], z_euler[i - 1], T[i - 1])
 
         rango = np.arange(len(T)) / self.fs
-        self.interval = rango; self.points = z_euler
+        self.interval = rango; self.points = self.noise_factor(z_euler)
         return
 
     def euler_backward(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
@@ -77,7 +78,7 @@ class ECGGenerator:
             z_euler[i] = z_euler[i - 1] + h * self.z_dot(x_euler[i], y_euler[i], z_euler[i], T[i])
 
         rango = np.arange(len(T)) / self.fs
-        self.interval = rango; self.points = z_euler
+        self.interval = rango; self.points = self.noise_factor(z_euler)
         return
 
     def rk2(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
@@ -105,7 +106,7 @@ class ECGGenerator:
             y_rk2[i] = y_rk2[i - 1] + (h / 2.) * (y_k1 + y_k2)
             z_rk2[i] = z_rk2[i - 1] + (h / 2.) * (z_k1 + z_k2)
         rango = np.arange(len(T)) / self.fs
-        self.interval = rango; self.points = z_rk2
+        self.interval = rango; self.points = self.noise_factor(z_rk2)
         return
 
     def rk4(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
@@ -188,14 +189,23 @@ class ECGGenerator:
             raise e
 
     def heart_rate(self):
-        peaks, _ = find_peaks(self.points, height=0.03)
+        peaks, _ = find_peaks(self.points, height=0.75)
         interval = peaks / self.fs
         return interval, peaks
 
-# ecg = ECGGenerator(fs=360)
-# interval, peaks = ecg.heart_rate()
+    def noise_factor(self, points):
+        z = np.array(points)
+        z_min = np.min(z)
+        z_max = np.max(z)
+        z_range = z_max - z_min
+        z = (z - z_min) * 1.6 / z_range - 0.4
+
+        eta = 2 * np.random.rand(len(z)) - 1
+        s = z + self.noise * eta
+        return s
+
+# ecg = ECGGenerator(fs=1, noise=0)
 # plt.plot(ecg.interval, ecg.points, label="Euler Forward")
-# plt.plot(interval, np.array(ecg.points)[peaks], "rs", label="HR")
 # plt.legend(loc="best")
 # plt.grid(linestyle="--")
 # plt.show()
