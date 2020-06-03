@@ -76,7 +76,8 @@ class ECGGenerator:
             y_euler[i] = y_euler[i - 1] + h * self.y_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1])
             z_euler[i] = z_euler[i - 1] + h * self.z_dot(x_euler[i], y_euler[i], z_euler[i], T[i])
 
-        self.interval = T; self.points = z_euler
+        rango = np.arange(len(T)) / self.fs
+        self.interval = rango; self.points = z_euler
         return
 
     def rk2(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
@@ -191,10 +192,10 @@ class ECGGenerator:
         interval = peaks / self.fs
         return interval, peaks
 
-ecg = ECGGenerator(fs=360)
-interval, peaks = ecg.heart_rate()
-plt.plot(ecg.interval, ecg.points, label="Euler Forward")
-plt.plot(interval, np.array(ecg.points)[peaks], "rs", label="HR")
-plt.legend(loc="best")
-plt.grid(linestyle="--")
-plt.show()
+# ecg = ECGGenerator(fs=360)
+# interval, peaks = ecg.heart_rate()
+# plt.plot(ecg.interval, ecg.points, label="Euler Forward")
+# plt.plot(interval, np.array(ecg.points)[peaks], "rs", label="HR")
+# plt.legend(loc="best")
+# plt.grid(linestyle="--")
+# plt.show()
