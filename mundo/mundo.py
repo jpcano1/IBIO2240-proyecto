@@ -33,8 +33,8 @@ def euler_back(h=0.01, x_0=1., y_0=0., z_0=0.04, t_0=0., t_f=10.):
     x_euler[0] = x_0; y_euler[0] = y_0; z_euler[0] = z_0
     """y_n=y_n-1+h*f(y_n,t_n)"""
     for i in range(1, len(T)):
-        x_euler[i] = x_euler[i - 1] + h * x_dot(x_euler[i-1], y_euler[i-1], Ws[i])#O WS[i-1]?
-        y_euler[i] = y_euler[i - 1] + h * y_dot(x_euler[i-1], y_euler[i-1], Ws[i])
+        x_euler[i] = x_euler[i - 1] + h * x_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1])#O WS[i-1]?
+        y_euler[i] = y_euler[i - 1] + h * y_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1])
         z_euler[i] = z_euler[i - 1] + h * z_dot(x_euler[i], y_euler[i], z_euler[i], T[i])
     return T, z_euler
 
@@ -52,18 +52,19 @@ def euler_for(h=0.01, x_0=1., y_0=0., z_0=0.04, t_0=0., t_f=10.):
         z_euler[i] = z_euler[i - 1] + h * z_dot(x_euler[i - 1], y_euler[i - 1], z_euler[i - 1], T[i - 1])
     return T, z_euler
 
-T, z_euler = euler_back()
-plt.plot(T, z_euler, "-")
-plt.grid(linestyle="--")
-plt.title("BACKWARD")
-plt.show()
+# T, z_euler = euler_back()
+# plt.plot(T, z_euler, "-", label="Backward")
+# plt.grid(linestyle="--")
+# plt.title("BACKWARD")
+# plt.show()
 
-T2, z_euler2 = euler_for()
-print(T-T2,z_euler-z_euler2)
+# T2, z_euler2 = euler_for()
+# print(T-T2,z_euler-z_euler2)
 
 # plt.title("FORWARD")
-# plt.plot(T, z_euler, "-")
+# plt.plot(T, z_euler, "-", label="Forward")
 # plt.grid(linestyle="--")
+# plt.legend(loc="best")
 # plt.show()
 
 def euler_mod(h=0.001, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
