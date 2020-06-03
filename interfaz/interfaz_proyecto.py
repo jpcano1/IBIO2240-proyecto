@@ -45,6 +45,20 @@ class InterfazProyecto(Tk):
         return self.ecg.a_i,self.ecg.b_i
 
     def plot(self):
+        fcardiaca=self.panel_parametros.frecuencia_input.get()
+        fmuestreo=self.panel_parametros.frecuencia_muestreo_input.get()
+        fruido=self.panel_parametros.factor_ruido_input.get()
+        latidos=self.panel_parametros.latidos_input.get()
+
+        if(fcardiaca!=""):
+            self.ecg.fs=float(fcardiaca)#Reemplazar
+        if (fmuestreo != ""):
+            self.ecg.fs = float(fmuestreo)
+        if (fruido != ""):
+            self.ecg.noise = float(fruido)
+        if (latidos != ""):
+            self.ecg.fs = float(latidos)#Reemplazar
+
         if(self.panel_metodos.getSelected()=="EA"):
             self.ecg.euler_forward()
             self.panel_senales.plot_canvas(self.ecg.interval,self.ecg.points)
