@@ -55,6 +55,48 @@ class ECGGenerator:
         self.interval = T; self.points = z_euler
         return
 
+    def rk4(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
+        T = np.arange(t_0, t_f + h, h)
+        x_rk4 = np.zeros(len(T))
+        y_rk4 = np.zeros(len(T))
+        z_rk4 = np.zeros(len(T))
+        Ws = self.w_t(T)
+        x_rk4[0] = x_0
+        y_rk4[0] = y_0
+        z_rk4[0] = z_0
+        for i in range(1, len(T)):
+            x_k1 = self.x_dot(x_rk4[i - 1], y_rk4[i - 1], Ws[i - 1])
+            y_k1 = self.x_dot(x_rk4[i - 1], y_rk4[i - 1], Ws[i - 1])
+            z_k1 = self.z_dot(x_rk4[i - 1], y_rk4[i - 1], z_rk4[i - 1], Ws[i - 1])
+
+            x_k2 = self.x_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k1 * h,
+                         Ws[i - 1] + h)
+            y_k2 = self.y_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k1 * h,
+                         Ws[i - 1] + h)
+            z_k2 = self.z_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k1 * h,
+                         z_rk4[i - 1] + z_k1 * h, Ws[i - 1] + h)
+
+            x_k3 = self.x_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
+                         Ws[i - 1] + h)
+            y_k3 = self.y_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
+                         Ws[i - 1] + h)
+            z_k3 = self.z_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
+                         z_rk4[i - 1] + z_k2 * h, Ws[i - 1] + h)
+
+            x_k4 = self.x_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + y_k3 * h,
+                         Ws[i - 1] + h)
+            y_k4 = self.y_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + y_k3 * h,
+                         Ws[i - 1] + h)
+            z_k4 = self.z_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + y_k3 * h,
+                         z_rk4[i - 1] + z_k3 * h, Ws[i - 1] + h)
+
+            x_rk4[i] = x_rk4[i - 1] + (h / 6.0) * (x_k1 + 2.0 * x_k2 + 2.0 * x_k3 + x_k4)
+            y_rk4[i] = y_rk4[i - 1] + (h / 6.0) * (y_k1 + 2.0 * y_k2 + 2.0 * y_k3 + y_k4)
+            z_rk4[i] = z_rk4[i - 1] + (h / 6.0) * (z_k1 + 2.0 * z_k2 + 2.0 * z_k3 + z_k4)
+
+            self.interval = T; self.points = z_rk4
+        return
+
     def save_points(self, points_path="points.bin", interval_path="interval.bin"):
         file = open(points_path, "wb")
         var1 = st.pack("d"*int(len(self.points)), *self.points)
