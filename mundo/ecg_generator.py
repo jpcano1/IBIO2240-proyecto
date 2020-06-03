@@ -11,17 +11,22 @@ parametros.loc["Theta_i"] = parametros.loc["Theta_i"] * np.pi
 
 class ECGGenerator:
 
-    def __init__(self):
+    def __init__(self, fs=1, hr_mean=60, hr_std=1):
         self.a_i = np.array([1.2, -5, 30, -7.5, 0.75])
         self.b_i = np.array([0.25, 0.1, 0.1, 0.1, 0.4])
         self.theta_i = np.array([-1/3, -1/12, 0, 1/12, 0.5]) * np.pi
         self.points = list()
         self.interval = list()
+        # Parámetros
+        self.fs = fs
+        self.hr_mean = hr_mean
+        self.hr_std = hr_std
         self.euler_forward()
 
-    @staticmethod
-    def w_t(t):
-        return np.random.uniform(0.98, 1.1, len(t))
+    def w_t(self, t):
+        rr_mean = 60 / self.hr_mean
+        rr_std = 60 * self.hr_std / self.hr_mean**2
+        return rr_mean + np.random.randn(len(t)) * rr_std
 
     @staticmethod
     def x_dot(x, y, trr):
@@ -53,7 +58,8 @@ class ECGGenerator:
             y_euler[i] = y_euler[i - 1] + h * self.y_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1])
             z_euler[i] = z_euler[i - 1] + h * self.z_dot(x_euler[i - 1], y_euler[i - 1], z_euler[i - 1], T[i - 1])
 
-        self.interval = T; self.points = z_euler
+        rango = np.arange(len(T)) / self.fs
+        self.interval = rango; self.points = z_euler
         return
 
     def rk2(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
@@ -80,8 +86,8 @@ class ECGGenerator:
             x_rk2[i] = x_rk2[i - 1] + (h / 2.) * (x_k1 + x_k2)
             y_rk2[i] = y_rk2[i - 1] + (h / 2.) * (y_k1 + y_k2)
             z_rk2[i] = z_rk2[i - 1] + (h / 2.) * (z_k1 + z_k2)
-
-        self.interval = T; self.points = z_rk2
+        rango = np.arange(len(T)) / self.fs
+        self.interval = rango; self.points = z_rk2
         return
 
     def rk4(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
@@ -135,7 +141,8 @@ class ECGGenerator:
             y_rk4[i] = y_rk4[i - 1] + (h / 6.0) * (y_k1 + 2.0 * y_k2 + 2.0 * y_k3 + y_k4)
             z_rk4[i] = z_rk4[i - 1] + (h / 6.0) * (z_k1 + 2.0 * z_k2 + 2.0 * z_k3 + z_k4)
 
-        self.interval = T; self.points = z_rk4
+        rango = np.arange(len(T)) / self.fs
+        self.interval = rango; self.points = z_rk4
         return
 
     def save_points(self, points_path="points.bin", interval_path="interval.bin"):
@@ -162,16 +169,15 @@ class ECGGenerator:
         except FileNotFoundError as e:
             raise e
 
-    def heart_rate(self, fm=360):
+    def heart_rate(self):
         peaks, _ = find_peaks(self.points, height=0.03)
-        return fm, peaks
+        interval = peaks / self.fs
+        return interval, peaks
 
-# ecg = ECGGenerator()
-# plt.plot(ecg.interval, ecg.points, label="Euler Forward")
-# ecg.rk4()
-# plt.plot(ecg.interval, ecg.points, label="Runge Kutta 4")
-# ecg.rk2()
-# plt.plot(ecg.interval, ecg.points, label="Runge Kutta 2")
-# plt.legend(loc="best")
-# plt.grid(linestyle="--")
-# plt.show()
+ecg = ECGGenerator(fs=360)
+interval, peaks = ecg.heart_rate()
+plt.plot(ecg.interval, ecg.points, label="Euler Forward")
+plt.plot(interval, np.array(ecg.points)[peaks], "rs", label="HR")
+plt.legend(loc="best")
+plt.grid(linestyle="--")
+plt.show()
