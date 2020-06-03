@@ -29,9 +29,8 @@ class PanelSenales(Frame):
         self.button_hr.pack()
 
     def plot_canvas(self,x,y,create=False):
-        if(not create):
-            self.ax.clear()
-            self.canvas.get_tk_widget().destroy()
+        if not create:
+            self.canvas.get_tk_widget().pack_forget()
         plt.style.use("dark_background")
         for param in ['text.color', 'axes.labelcolor', 'xtick.color', 'ytick.color']:
             plt.rcParams[param] = '0.9'  # very light grey
@@ -70,4 +69,3 @@ class PanelSenales(Frame):
         self.canvas = FigureCanvasTkAgg(figure=fig, master=self)
         self.canvas.get_tk_widget().pack()
         self.canvas.draw()
-
