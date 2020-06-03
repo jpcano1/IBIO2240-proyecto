@@ -45,10 +45,25 @@ class InterfazProyecto(Tk):
         return self.ecg.a_i,self.ecg.b_i
 
     def plot(self):
-        self.panel_senales.plot_canvas(self.ecg.interval,self.ecg.points)
+        if(self.panel_metodos.getSelected()=="EA"):
+            self.ecg.euler_forward()
+            self.panel_senales.plot_canvas(self.ecg.interval,self.ecg.points)
+        elif(self.panel_metodos.getSelected()=="EAT"):
+            self.ecg.euler_backward()
+            self.panel_senales.plot_canvas(self.ecg.interval,self.ecg.points)
+        elif (self.panel_metodos.getSelected() == "EM"):
+            #self.ecg.euler_modificado()
+            self.panel_senales.plot_canvas(self.ecg.interval, self.ecg.points)
+        elif (self.panel_metodos.getSelected() == "RK2"):
+            self.ecg.rk2()
+            self.panel_senales.plot_canvas(self.ecg.interval, self.ecg.points)
+        else:
+            self.ecg.rk4()
+            self.panel_senales.plot_canvas(self.ecg.interval, self.ecg.points)
 
     def getXY(self):
         return self.ecg.interval,self.ecg.points
+
 if __name__ == '__main__':
     interfaz = InterfazProyecto(" ECG Monitor")
     interfaz.mainloop()
