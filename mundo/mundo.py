@@ -88,7 +88,7 @@ def rk2(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
     z_rk2[0] = z_0
     for i in range(1, len(T)):
         x_k1 = x_dot(x_rk2[i-1], y_rk2[i-1], Ws[i-1])
-        y_k1 = x_dot(x_rk2[i-1], y_rk2[i-1], Ws[i-1])
+        y_k1 = y_dot(x_rk2[i-1], y_rk2[i-1], Ws[i-1])
         z_k1 = z_dot(x_rk2[i-1], y_rk2[i-1], z_rk2[i-1], Ws[i-1])
 
         x_k2 = x_dot(x_rk2[i-1] + x_k1 * h, y_rk2[i-1] + y_k1 * h,
@@ -104,11 +104,11 @@ def rk2(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
 
     return T, z_rk2
 
-#T, z_rk2 = rk2()
+T, z_rk2 = rk2()
 
-#plt.plot(T, z_rk2)
-#plt.grid(linestyle="--")
-#plt.show()
+plt.plot(T, z_rk2)
+plt.grid(linestyle="--")
+plt.show()
 
 def rk4(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
     T = np.arange(t_0, t_f + h, h)
@@ -151,8 +151,8 @@ def rk4(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
 
     return T, z_rk4
 
-T, z_rk4 = rk4()
-
-plt.plot(T, z_rk4)
-plt.grid(linestyle="--")
-plt.show()
+# T, z_rk4 = rk4()
+#
+# plt.plot(T, z_rk4)
+# plt.grid(linestyle="--")
+# plt.show()

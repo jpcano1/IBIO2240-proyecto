@@ -52,7 +52,36 @@ class ECGGenerator:
             x_euler[i] = x_euler[i - 1] + h * self.x_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1])
             y_euler[i] = y_euler[i - 1] + h * self.y_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1])
             z_euler[i] = z_euler[i - 1] + h * self.z_dot(x_euler[i - 1], y_euler[i - 1], z_euler[i - 1], T[i - 1])
+
         self.interval = T; self.points = z_euler
+        return
+
+    def rk2(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
+        T = np.arange(t_0, t_f + h, h)
+        x_rk2 = np.zeros(len(T))
+        y_rk2 = np.zeros(len(T))
+        z_rk2 = np.zeros(len(T))
+        Ws = self.w_t(T)
+        x_rk2[0] = x_0
+        y_rk2[0] = y_0
+        z_rk2[0] = z_0
+        for i in range(1, len(T)):
+            x_k1 = self.x_dot(x_rk2[i - 1], y_rk2[i - 1], Ws[i - 1])
+            y_k1 = self.y_dot(x_rk2[i - 1], y_rk2[i - 1], Ws[i - 1])
+            z_k1 = self.z_dot(x_rk2[i - 1], y_rk2[i - 1], z_rk2[i - 1], Ws[i - 1])
+
+            x_k2 = self.x_dot(x_rk2[i - 1] + x_k1 * h, y_rk2[i - 1] + y_k1 * h,
+                         Ws[i - 1] + h)
+            y_k2 = self.y_dot(x_rk2[i - 1] + x_k1 * h, y_rk2[i - 1] + y_k1 * h,
+                         Ws[i - 1] + h)
+            z_k2 = self.z_dot(x_rk2[i - 1] + x_k1 * h, y_rk2[i - 1] + y_k1 * h,
+                         z_rk2[i - 1] + z_k1 * h, Ws[i - 1] + h)
+
+            x_rk2[i] = x_rk2[i - 1] + (h / 2.) * (x_k1 + x_k2)
+            y_rk2[i] = y_rk2[i - 1] + (h / 2.) * (y_k1 + y_k2)
+            z_rk2[i] = z_rk2[i - 1] + (h / 2.) * (z_k1 + z_k2)
+
+        self.interval = T; self.points = z_rk2
         return
 
     def rk4(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
@@ -66,35 +95,47 @@ class ECGGenerator:
         z_rk4[0] = z_0
         for i in range(1, len(T)):
             x_k1 = self.x_dot(x_rk4[i - 1], y_rk4[i - 1], Ws[i - 1])
-            y_k1 = self.x_dot(x_rk4[i - 1], y_rk4[i - 1], Ws[i - 1])
+            y_k1 = self.y_dot(x_rk4[i - 1], y_rk4[i - 1], Ws[i - 1])
             z_k1 = self.z_dot(x_rk4[i - 1], y_rk4[i - 1], z_rk4[i - 1], Ws[i - 1])
 
-            x_k2 = self.x_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k1 * h,
-                         Ws[i - 1] + h)
-            y_k2 = self.y_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k1 * h,
-                         Ws[i - 1] + h)
-            z_k2 = self.z_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k1 * h,
-                         z_rk4[i - 1] + z_k1 * h, Ws[i - 1] + h)
+            x_k2 = self.x_dot(x_rk4[i - 1] + 0.5 * x_k1 * h,
+                              y_rk4[i - 1] + 0.5 * y_k1 * h,
+                              Ws[i - 1] + 0.5 * h)
+            y_k2 = self.y_dot(x_rk4[i - 1] + 0.5 * x_k1 * h,
+                              y_rk4[i - 1] + 0.5 * y_k1 * h,
+                              Ws[i - 1] + 0.5 * h)
+            z_k2 = self.z_dot(x_rk4[i - 1] + 0.5 * x_k1 * h,
+                              y_rk4[i - 1] + 0.5 * y_k1 * h,
+                              z_rk4[i - 1] + 0.5 * z_k1 * h,
+                              Ws[i - 1] + 0.5 * h)
 
-            x_k3 = self.x_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
-                         Ws[i - 1] + h)
-            y_k3 = self.y_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
-                         Ws[i - 1] + h)
-            z_k3 = self.z_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
-                         z_rk4[i - 1] + z_k2 * h, Ws[i - 1] + h)
+            x_k3 = self.x_dot(x_rk4[i - 1] + 0.5 * x_k2 * h,
+                              y_rk4[i - 1] + 0.5 * y_k2 * h,
+                              Ws[i - 1] + 0.5 * h)
+            y_k3 = self.y_dot(x_rk4[i - 1] + 0.5 * x_k2 * h,
+                              y_rk4[i - 1] + 0.5 * y_k2 * h,
+                              Ws[i - 1] + 0.5 * h)
+            z_k3 = self.z_dot(x_rk4[i - 1] + 0.5 * x_k2 * h,
+                              y_rk4[i - 1] + 0.5 * y_k2 * h,
+                              z_rk4[i - 1] + 0.5 * z_k2 * h,
+                              Ws[i - 1] + 0.5 * h)
 
-            x_k4 = self.x_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + y_k3 * h,
-                         Ws[i - 1] + h)
-            y_k4 = self.y_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + y_k3 * h,
-                         Ws[i - 1] + h)
-            z_k4 = self.z_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + y_k3 * h,
-                         z_rk4[i - 1] + z_k3 * h, Ws[i - 1] + h)
+            x_k4 = self.x_dot(x_rk4[i - 1] + 0.5 * x_k3 * h,
+                              y_rk4[i - 1] + 0.5 * y_k3 * h,
+                              Ws[i - 1] + 0.5 * h)
+            y_k4 = self.y_dot(x_rk4[i - 1] + 0.5 * x_k3 * h,
+                              y_rk4[i - 1] + 0.5 * y_k3 * h,
+                              Ws[i - 1] + 0.5 * h)
+            z_k4 = self.z_dot(x_rk4[i - 1] + 0.5 * x_k3 * h,
+                              y_rk4[i - 1] + 0.5 * y_k3 * h,
+                              z_rk4[i - 1] + 0.5 * z_k3 * h,
+                              Ws[i - 1] + 0.5 * h)
 
             x_rk4[i] = x_rk4[i - 1] + (h / 6.0) * (x_k1 + 2.0 * x_k2 + 2.0 * x_k3 + x_k4)
             y_rk4[i] = y_rk4[i - 1] + (h / 6.0) * (y_k1 + 2.0 * y_k2 + 2.0 * y_k3 + y_k4)
             z_rk4[i] = z_rk4[i - 1] + (h / 6.0) * (z_k1 + 2.0 * z_k2 + 2.0 * z_k3 + z_k4)
 
-            self.interval = T; self.points = z_rk4
+        self.interval = T; self.points = z_rk4
         return
 
     def save_points(self, points_path="points.bin", interval_path="interval.bin"):
@@ -126,10 +167,11 @@ class ECGGenerator:
         return fm, peaks
 
 # ecg = ECGGenerator()
-# plt.plot(ecg.interval, ecg.points)
-# fs = 360
-# time = np.arange(len(ecg.points)) / fs
-# peaks, _ = find_peaks(ecg.points, height=0.03)
-# plt.plot(time, ecg.points)
-# plt.plot(peaks/fs, np.array(ecg.points)[peaks], "sr")
+# plt.plot(ecg.interval, ecg.points, label="Euler Forward")
+# ecg.rk4()
+# plt.plot(ecg.interval, ecg.points, label="Runge Kutta 4")
+# ecg.rk2()
+# plt.plot(ecg.interval, ecg.points, label="Runge Kutta 2")
+# plt.legend(loc="best")
+# plt.grid(linestyle="--")
 # plt.show()
