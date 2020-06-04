@@ -67,7 +67,7 @@ def euler_for(h=0.01, x_0=1., y_0=0., z_0=0.04, t_0=0., t_f=10.):
 # plt.legend(loc="best")
 # plt.show()
 
-def euler_mod(h=0.001, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
+def euler_mod(h=0.01, x_0=1., y_0=0., z_0=0.04, t_0=0., t_f=10.):
     T = np.arange(t_0, t_f + h, h)
     x_euler = np.zeros(len(T))
     Ws = w_t(T)
@@ -77,16 +77,16 @@ def euler_mod(h=0.001, x_0=1, y_0=0, z_0=0, t_0=0, t_f=0.1):
     y_euler[0] = y_0
     z_euler[0] = z_0
     for i in range(1, len(T)):
-        x_euler[i] = (x_euler[i - 1] + (h/2.0) * x_dot(x_euler[i - 1], y_euler[i - 1])) / x_dot(x_euler[i], h)
-        y_euler[i] = (y_euler[i - 1] + (h/2.0) * y_dot(x_euler[i - 1], y_euler[i - 1])) / y_dot(x_euler[i], h)
-        z_euler[i] = (z_euler[i - 1] + (h/2.0) * z_dot(x_euler[i - 1], y_euler[i - 1])) / z_dot(x_euler[i], h)
+        x_euler[i] = x_euler[i - 1] + (h/2.0) * (x_dot(x_euler[i-1], y_euler[i-1],Ws[i-1]) + x_dot(x_euler[i-1], y_euler[i - 1],Ws[i - 1]))
+        y_euler[i] = y_euler[i - 1] + (h/2.0) * (y_dot(x_euler[i-1], y_euler[i-1],Ws[i-1]) + y_dot(x_euler[i-1], y_euler[i - 1],Ws[i - 1]))
+        z_euler[i] = z_euler[i - 1] + (h/2.0) * (z_dot(x_euler[i], y_euler[i],z_euler[i], T[i])) + z_dot(x_euler[i-1], y_euler[i - 1],z_euler[i - 1], T[i - 1])
     return T, z_euler
 
-# T, z_euler = euler_mod()
-
-# plt.plot(T, z_euler)
-# plt.grid(linestyle="--")
-# plt.show()
+T, z_euler = euler_mod()
+plt.title("MODIFIED")
+plt.plot(T, z_euler)
+plt.grid(linestyle="--")
+plt.show()
 
 def rk2(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
     T = np.arange(t_0, t_f + h, h)
