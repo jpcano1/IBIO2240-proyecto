@@ -31,6 +31,8 @@ class ECGGenerator:
         self.hr_mean = hr_mean
         self.hr_std = hr_std
         self.noise = noise
+        self.num_latidos = 10
+
         # Inicializa con Euler Forward
         self.euler_forward()
 
@@ -265,12 +267,13 @@ class ECGGenerator:
         self.interval = rango; self.points = z_rk4
         return
 
-    def save_points(self, points_path="points.bin", interval_path="interval.bin"):
+    def save_points(self, points_path="../data/points.bin", interval_path="../data/interval.bin", params_path="../data/params.txt"):
         """
         Salva los puntos de la gráfica al igual que el
         rango donde se evalúa
         :param points_path: Ruta del archivo de puntos
         :param interval_path: Ruta del archivo del intervalo
+        :param params_path: Ruta del archivo del parámetros
         """
         file = open(points_path, "wb")
         var1 = st.pack("d"*int(len(self.points)), *self.points)
@@ -280,9 +283,31 @@ class ECGGenerator:
         var1 = st.pack("d"*int(len(self.interval)), *self.interval)
         file.write(var1)
         file.close()
+        file = open(params_path,"w")
+
+        file.write("frecuencia de muestreo:"+str(self.fs)+"\n")
+        file.write("Frecuencia cardiaca media:"+str(self.hr_mean)+"\n")
+        file.write("Desv est frecuencia cardiaca:"+str(self.hr_std)+"\n")#Validar
+        file.write("frecuencia de muestreo:"+str(self.noise)+"\n")#Validad
+        file.write("# de latidos:"+str(self.num_latidos)+"\n")
+        file.write("a_i:")
+        for i in self.a_i:
+            file.write(str(i)+",")
+        file.write("\n")
+
+        file.write("b_i:")
+        for i in self.b_i:
+            file.write(str(i) + ",")
+        file.write("\n")
+
+        file.write("theta_i:")
+        for i in self.theta_i:
+            file.write(str(i) + ",")
+        file.write("\n")
+        file.close()
         return
 
-    def load_points(self, points_path="points.bin", interval_path="interval.bin"):
+    def load_points(self, points_path="../data/points.bin", interval_path="../data/interval.bin", params_path="../data/params.txt"):
         """
         Carga los puntos de la gráfica, al igual que
         su rango de evaluación
@@ -299,6 +324,18 @@ class ECGGenerator:
             file = open(interval_path, "rb")
             var1 = file.read()
             self.interval = st.unpack("d" * int(len(var1) / 8), var1)
+            file.close()
+
+            file = open(params_path, "r")
+            self.fs = float(file.readline().split(":")[1].replace("\n",""))
+            self.hr_mean = float(file.readline().split(":")[1].replace("\n",""))
+            self.hr_std = float(file.readline().split(":")[1].replace("\n",""))
+            self.noise = float(file.readline().split(":")[1].replace("\n",""))
+            self.num_latidos = float(file.readline().split(":")[1].replace("\n",""))
+            print(self.fs,self.hr_mean,self.hr_std,self.noise,self.num_latidos)
+            self.a_i=[float(x) for x in file.readline().split(":")[1].replace(",\n","").split(",")]
+            self.b_i=[float(x) for x in file.readline().split(":")[1].replace(",\n","").split(",")]
+            self.theta_i=[float(x) for x in file.readline().split(":")[1].replace(",\n","").split(",")]
             file.close()
         except FileNotFoundError as e:
             raise e

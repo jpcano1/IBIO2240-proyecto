@@ -45,13 +45,33 @@ class InterfazProyecto(Tk):
     def updatePoints(self):
         return self.ecg.a_i,self.ecg.b_i
 
+    def save(self):
+        self.ecg.save_points()
+
+    def load(self):
+        self.ecg.load_points()
+
     def plot(self):
         fcardiaca=self.panel_parametros.frecuencia_input.get()
         fmuestreo=self.panel_parametros.frecuencia_muestreo_input.get()
         fruido=self.panel_parametros.factor_ruido_input.get()
         latidos=self.panel_parametros.latidos_input.get()
+        newa=[]
+        newa.append(float(self.panel_puntos.p_a))
+        newa.append(float(self.panel_puntos.q_a))
+        newa.append(float(self.panel_puntos.r_a))
+        newa.append(float(self.panel_puntos.s_a))
+        newa.append(float(self.panel_puntos.t_a))
 
-        num_latidos = 10
+        newb=[]
+        newb.append(float(self.panel_puntos.p_b))
+        newb.append(float(self.panel_puntos.q_b))
+        newb.append(float(self.panel_puntos.r_b))
+        newb.append(float(self.panel_puntos.s_b))
+        newb.append(float(self.panel_puntos.t_b))
+
+        self.ecg.a_i=newa
+        self.ecg.b_i=newb
 
         if fcardiaca!= "":
             self.ecg.hr_mean = float(fcardiaca)
@@ -60,22 +80,22 @@ class InterfazProyecto(Tk):
         if fruido != "":
             self.ecg.noise = float(fruido)
         if latidos != "":
-            num_latidos = float(latidos)
+            self.ecg.num_latidos = float(latidos)
 
         if self.panel_metodos.getSelected() == "EA":
-            self.ecg.euler_forward(t_f=num_latidos)
+            self.ecg.euler_forward(t_f=self.ecg.num_latidos)
             self.panel_senales.plot_canvas(self.ecg.interval,self.ecg.points)
         elif self.panel_metodos.getSelected()== "EAT":
-            self.ecg.euler_backward(t_f=num_latidos)
+            self.ecg.euler_backward(t_f=self.ecg.num_latidos)
             self.panel_senales.plot_canvas(self.ecg.interval,self.ecg.points)
         elif self.panel_metodos.getSelected() == "EM":
-            self.ecg.euler_modificado(t_f=num_latidos)
+            self.ecg.euler_modificado(t_f=self.ecg.num_latidos)
             self.panel_senales.plot_canvas(self.ecg.interval, self.ecg.points)
         elif self.panel_metodos.getSelected() == "RK2":
-            self.ecg.rk2(t_f=num_latidos)
+            self.ecg.rk2(t_f=self.ecg.num_latidos)
             self.panel_senales.plot_canvas(self.ecg.interval, self.ecg.points)
         else:
-            self.ecg.rk4(t_f=num_latidos)
+            self.ecg.rk4(t_f=self.ecg.num_latidos)
             self.panel_senales.plot_canvas(self.ecg.interval, self.ecg.points)
 
     def getXY(self):
