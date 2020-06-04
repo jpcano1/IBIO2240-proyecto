@@ -12,7 +12,7 @@ class InterfazProyecto(Tk):
 
     def __init__(self, name="Interfaz"):
         super(InterfazProyecto, self).__init__(className=name)
-        self.geometry("1050x750")
+        self.geometry("1100x760")
 
         Style = ttk.Style()  # Objeto para crear estilos  # https://kite.com/python/docs/ttk.Style
         Style.configure('2.TButton', font=('Times', 15, 'bold', 'underline',), background="#212946",foreground='red',height=5, width=3)
@@ -29,7 +29,7 @@ class InterfazProyecto(Tk):
         self.panel_parametros.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_metodos = PanelMetodos(self) #Bien
-        self.panel_metodos.place(x=700, y=400)
+        self.panel_metodos.place(x=700, y=410)
         self.panel_metodos.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_opciones = PanelOpciones(self)
@@ -41,7 +41,7 @@ class InterfazProyecto(Tk):
         self.panel_senales.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_puntos = PanelPuntos(self)
-        self.panel_puntos.place(x=250, y=650)
+        self.panel_puntos.place(x=250, y=675)
         self.panel_puntos.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         #Imágenes
@@ -55,7 +55,7 @@ class InterfazProyecto(Tk):
         self.img2=self.img2.resize((50, 50))
         self.img2 = ImageTk.PhotoImage(self.img2)
         self.lab2 = Label(image=self.img2,borderwidth=0)
-        self.lab2.place(x=150, y=670)
+        self.lab2.place(x=150, y=680)
 
         self.img3=Image.open("../data/img/heart.jpg")
         self.img3=self.img3.resize((100, 90))
