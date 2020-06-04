@@ -63,7 +63,7 @@ class InterfazProyecto(Tk):
         self.lab3 = Label(image=self.img3,borderwidth=0)
         self.lab3.place(x=130, y=100)
 
-        Boton2 = ttk.Button(master=self, text="X", style="2.TButton", command=self.CerrarAplicacion).place(x=0, y=0)
+        Boton2 = ttk.Button(master=self, text="X", style="2.TButton", command=self.CerrarAplicacion2).place(x=0, y=0)
 
     '''Se definen todas las funciones requeridas'''
 
@@ -73,6 +73,9 @@ class InterfazProyecto(Tk):
             self.destroy()
         else:
             self.messagebox.showinfo('Retornar', 'Será retornado a la aplicación')
+
+    def CerrarAplicacion2(self):
+        self.destroy()
 
     def updatePoints(self):
         return self.ecg.a_i,self.ecg.b_i
