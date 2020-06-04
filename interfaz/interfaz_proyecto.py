@@ -15,11 +15,11 @@ class InterfazProyecto(Tk):
         self.geometry("1050x750")
 
         Style = ttk.Style()  # Objeto para crear estilos  # https://kite.com/python/docs/ttk.Style
-        Style.configure('2.TButton', font=('Times', 20, 'bold', 'underline'), foreground='#E88A18')
+        Style.configure('2.TButton', font=('Times', 15, 'bold', 'underline',), background="#212946",foreground='red',height=5, width=3)
 
         Style.map("2.TButton",
-                  foreground=[('pressed', 'yellow'), ('active', '#34495E')],
-                  background=[('pressed', '!disabled', 'black'), ('active', 'white')])
+                  foreground=[('pressed', 'red'), ('active', 'red')],
+                  background=[('pressed', '!disabled', '#212946'), ('active', '#212946')])
 
         self.configure(background='#212946')
         self.ecg=ECGGenerator()
@@ -63,7 +63,7 @@ class InterfazProyecto(Tk):
         self.lab3 = Label(image=self.img3,borderwidth=0)
         self.lab3.place(x=130, y=100)
 
-        Boton2 = ttk.Button(master=self, text="Cerrar", style="2.TButton", command=self.CerrarAplicacion).place(x=0, y=0)
+        Boton2 = ttk.Button(master=self, text="X", style="2.TButton", command=self.CerrarAplicacion).place(x=0, y=0)
 
     '''Se definen todas las funciones requeridas'''
 
