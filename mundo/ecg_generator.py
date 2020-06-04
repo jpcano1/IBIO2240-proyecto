@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from scipy.signal import find_peaks
 
@@ -342,11 +341,21 @@ class ECGGenerator:
             raise e
 
     def heart_rate(self):
+        """
+        Calcula el heart rate con base en el número de picos
+        :return: las coordenadas en X e Y
+        """
         peaks, _ = find_peaks(self.points, height=0.8)
         interval = peaks / self.fs
         return interval, peaks
 
     def noise_factor(self, points):
+        """
+        Escala los valores de la gráfica y coloca
+        el factor de ruido
+        :param points: los puntos a escalar
+        :return: los puntos con el factor de sonido
+        """
         z = np.array(points)
         z_min = np.min(z)
         z_max = np.max(z)
@@ -356,9 +365,3 @@ class ECGGenerator:
         eta = 2 * np.random.rand(len(z)) - 1
         s = z + self.noise * eta
         return s
-
-# ecg = ECGGenerator(fs=1, noise=0)
-# plt.plot(ecg.interval, ecg.points, label="Euler Forward")
-# plt.legend(loc="best")
-# plt.grid(linestyle="--")
-# plt.show()

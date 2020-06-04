@@ -11,10 +11,12 @@ class PanelOpciones(Frame):
         self.interfaz = pInterfaz
 
         # Botones
-        self.guardar_boton = Button(master=self,command=self.save, text=self.GUARDAR,background='#FE53BB', foreground="#212946", font=('calibri', 15, 'bold'),borderwidth='4')
+        self.guardar_boton = Button(master=self,command=self.save, text=self.GUARDAR,background='#FE53BB',
+                                    foreground="#212946", font=('calibri', 15, 'bold'),borderwidth='4')
         self.guardar_boton.pack(side=LEFT)
 
-        self.cargar_boton = Button(master=self,command=self.load, text=self.CARGAR,background='#FE53BB', foreground="#212946", font=('calibri', 15, 'bold'),borderwidth='4')
+        self.cargar_boton = Button(master=self,command=self.load, text=self.CARGAR,background='#FE53BB',
+                                   foreground="#212946", font=('calibri', 15, 'bold'),borderwidth='4')
         self.cargar_boton.pack(side=RIGHT)
 
     def save(self):
