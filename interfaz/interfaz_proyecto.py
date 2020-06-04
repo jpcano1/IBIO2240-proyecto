@@ -85,6 +85,11 @@ class InterfazProyecto(Tk):
         self.panel_puntos.updateMe()
         self.panel_parametros.updateMe(self.ecg.hr_mean,self.ecg.fs,self.ecg.noise,self.ecg.num_latidos)
 
+    def darHR(self):
+        x,y=self.ecg.heart_rate()
+        return len(y)
+
+
     def plot(self):
         fcardiaca=self.panel_parametros.frecuencia_input.get()
         fmuestreo=self.panel_parametros.frecuencia_muestreo_input.get()

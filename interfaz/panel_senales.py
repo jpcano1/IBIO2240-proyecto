@@ -23,10 +23,15 @@ class PanelSenales(Frame):
         self.text_hr = Entry(master=self,background='#212946',foreground='#dad0c0',insertbackground='#dad0c0')
         self.text_hr.pack(pady=10)
 
-        self.button_hr = Button(master=self, text="Hallar HR",background='#F5D300', foreground="#212946", font=('calibri', 12, 'bold'),borderwidth='4')
+        self.button_hr = Button(master=self, text="Hallar HR",command=self.recibir, background='#F5D300', foreground="#212946", font=('calibri', 12, 'bold'),borderwidth='4')
         self.button_hr.pack()
 
         self.plot_canvas(x,y,True)
+
+    def recibir(self):
+
+        self.text_hr.delete(0, END)
+        self.text_hr.insert(0, self.interfaz.darHR())
 
     def plot_canvas(self,x,y,create=False):
         if not create:
