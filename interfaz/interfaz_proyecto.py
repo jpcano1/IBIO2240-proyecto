@@ -6,12 +6,20 @@ from interfaz.panel_senales import PanelSenales
 from interfaz.panel_puntos import PanelPuntos
 from mundo.ecg_generator import ECGGenerator
 from PIL import ImageTk ,Image
+from tkinter import ttk
 
 class InterfazProyecto(Tk):
 
     def __init__(self, name="Interfaz"):
         super(InterfazProyecto, self).__init__(className=name)
         self.geometry("960x800")
+
+        # Style = ttk.Style()  # Objeto para crear estilos  # https://kite.com/python/docs/ttk.Style
+        # Style.configure('2.TButton', font=('Times', 20, 'bold', 'underline'), foreground='#E88A18')
+
+        Style.map("2.TButton",
+                  foreground=[('pressed', 'yellow'), ('active', '#34495E')],
+                  background=[('pressed', '!disabled', 'black'), ('active', 'white')])
 
         self.configure(background='#212946')
         self.ecg=ECGGenerator()
@@ -54,6 +62,18 @@ class InterfazProyecto(Tk):
         self.img3 = ImageTk.PhotoImage(self.img3)
         self.lab3 = Label(image=self.img3,borderwidth=0)
         self.lab3.place(x=130, y=100)
+
+        # Boton2 = ttk.Button(master=self, text="Cerrar", style="2.TButton", command=self.CerrarAplicacion).place(x=0, y=0)
+
+    '''Se definen todas las funciones requeridas'''
+
+    def CerrarAplicacion(self):
+        MsgBox = self.messagebox.askquestion('Cerrar Aplicación', '¿Está seguro que desea cerrar la aplicación?',
+                                           icon='warning')
+        if MsgBox == 'yes':
+            self.destroy()
+        else:
+            self.messagebox.showinfo('Retornar', 'Será retornado a la aplicación')
 
     def updatePoints(self):
         return self.ecg.a_i,self.ecg.b_i
