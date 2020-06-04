@@ -129,6 +129,7 @@ class ECGGenerator:
                                                                                  Ws[i - 1]))
             z_euler[i] = z_euler[i - 1] + (h / 2.0) * (self.z_dot(x_euler[i], y_euler[i], z_euler[i], T[i]) + self.z_dot(
                 x_euler[i - 1], y_euler[i - 1], z_euler[i - 1], T[i - 1]))
+
         rango = np.arange(len(T)) / self.fs
         self.interval = rango; self.points = self.noise_factor(z_euler)
         return
@@ -197,6 +198,7 @@ class ECGGenerator:
             x_rk2[i] = x_rk2[i - 1] + (h / 2.) * (x_k1 + x_k2)
             y_rk2[i] = y_rk2[i - 1] + (h / 2.) * (y_k1 + y_k2)
             z_rk2[i] = z_rk2[i - 1] + (h / 2.) * (z_k1 + z_k2)
+
         rango = np.arange(len(T)) / self.fs
         self.interval = rango; self.points = self.noise_factor(z_rk2)
         return
@@ -264,7 +266,7 @@ class ECGGenerator:
             z_rk4[i] = z_rk4[i - 1] + (h / 6.0) * (z_k1 + 2.0 * z_k2 + 2.0 * z_k3 + z_k4)
 
         rango = np.arange(len(T)) / self.fs
-        self.interval = rango; self.points = z_rk4
+        self.interval = rango; self.points = self.noise_factor(z_rk4)
         return
 
     def save_points(self, points_path="../data/points.bin", interval_path="../data/interval.bin", params_path="../data/params.txt"):
@@ -340,7 +342,7 @@ class ECGGenerator:
             raise e
 
     def heart_rate(self):
-        peaks, _ = find_peaks(self.points, height=0.75)
+        peaks, _ = find_peaks(self.points, height=0.8)
         interval = peaks / self.fs
         return interval, peaks
 
