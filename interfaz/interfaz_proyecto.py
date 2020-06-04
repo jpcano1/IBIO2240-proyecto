@@ -7,7 +7,11 @@ from interfaz.panel_puntos import PanelPuntos
 from mundo.ecg_generator import ECGGenerator
 from PIL import ImageTk ,Image
 from tkinter import ttk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
+import matplotlib.pyplot as plt
+import pandas as pd
+
 class InterfazProyecto(Tk):
 
     def __init__(self, name="Interfaz"):
@@ -90,6 +94,43 @@ class InterfazProyecto(Tk):
 
     def darHR(self):
         x,y=self.ecg.heart_rate()
+        #self.panel_senales.pintar_aparte(x,self.ecg.points[y])
+        window=tk.Toplevel(self)
+        plt.style.use("dark_background")
+        for param in ['text.color', 'axes.labelcolor', 'xtick.color', 'ytick.color']:
+            plt.rcParams[param] = '0.9'  # very light grey
+        for param in ['figure.facecolor', 'axes.facecolor', 'savefig.facecolor']:
+            plt.rcParams[param] = '#212946'  # bluish dark grey
+        colors = [
+            '#08F7FE',  # teal/cyan
+            '#00ff41',  # matrix green
+        ]
+        df = pd.DataFrame({'y': self.ecg.points[y]})
+        fig, ax = plt.subplots()
+        ax.plot(x, self.ecg.points[y], color=colors[0], linewidth=1.4)
+
+        # Redraw the data with low alpha and slighty increased linewidth:
+        n_shades = 10
+        diff_linewidth = 0.5
+        alpha_value = 0.3 / n_shades
+        for n in range(1, n_shades + 1):
+            ax.plot(x, self.ecg.points[y], linewidth=2 + (diff_linewidth * n),
+                         alpha=alpha_value,
+                         color=colors[0])
+
+        # Color the areas below the lines:
+        for column, color in zip(df, colors):
+            ax.fill_between(x=x,
+                                 y1=df[column].values,
+                                 y2=[0] * len(df),
+                                 color=color,
+                                 alpha=0.1)
+
+        ax.grid(color='#2A3459', linewidth=1.5, linestyle="--")
+        ax.set_xlim(min(x), max(x))  # to not have the markers cut off
+        canvas = FigureCanvasTkAgg(figure=fig, master=window)
+        canvas.get_tk_widget().pack()
+        canvas.draw()
         return len(y)
 
 
