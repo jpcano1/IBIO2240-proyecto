@@ -96,6 +96,7 @@ class InterfazProyecto(Tk):
         x,y=self.ecg.heart_rate()
         #self.panel_senales.pintar_aparte(x,self.ecg.points[y])
         window=tk.Toplevel(self)
+
         window.configure(background='#212946')
         title = Label(master=window, text="HR", background='#212946', foreground='#08F7FE',
                       font=('calibri', 16, 'bold'))
@@ -111,7 +112,7 @@ class InterfazProyecto(Tk):
         ]
         df = pd.DataFrame({'y': self.ecg.points[y]})
         fig, ax = plt.subplots()
-        ax.plot(x, self.ecg.points[y], color=colors[0], linewidth=1.4,marker='s')
+        ax.plot(x, self.ecg.points[y], color=colors[0], linewidth=1.4,marker='^')
 
         # Redraw the data with low alpha and slighty increased linewidth:
         n_shades = 10
@@ -130,12 +131,12 @@ class InterfazProyecto(Tk):
                                  color=color,
                                  alpha=0.1)
 
-        ax.grid(color='#2A3459', linewidth=1.5, linestyle="--")
+        #ax.grid(color='#2A3459', linewidth=1.5, linestyle="--")
         ax.set_xlim(min(x), max(x))  # to not have the markers cut off
         canvas = FigureCanvasTkAgg(figure=fig, master=window)
         canvas.get_tk_widget().pack()
         canvas.draw()
-        return len(y)
+        return len(y)/60
 
     def plot(self):
         fcardiaca=self.panel_parametros.frecuencia_input.get()
