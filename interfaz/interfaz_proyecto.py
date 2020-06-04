@@ -11,35 +11,36 @@ class InterfazProyecto(Tk):
 
     def __init__(self, name="Interfaz"):
         super(InterfazProyecto, self).__init__(className=name)
+        self.geometry("1050x800")
 
         self.configure(background='#212946')
         self.ecg=ECGGenerator()
 
         self.panel_parametros = PanelParametros(self)
-        self.panel_parametros.grid(row=0, column=1)
+        self.panel_parametros.place(x=700, y=300)
         self.panel_parametros.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_metodos = PanelMetodos(self)
-        self.panel_metodos.grid(row=1, column=1)
+        self.panel_metodos.place(x=700, y=500)
         self.panel_metodos.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_opciones = PanelOpciones(self)
-        self.panel_opciones.grid(row=0, column=0)
+        self.panel_opciones.place(x=250, y=0)
         self.panel_opciones.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_senales = PanelSenales(self)
-        self.panel_senales.grid(row=1, column=0)
+        self.panel_senales.place(x=30, y=100)
         self.panel_senales.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_puntos = PanelPuntos(self)
-        self.panel_puntos.grid(row=2, column=0)
+        self.panel_puntos.place(x=250, y=700)
         self.panel_puntos.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.img=Image.open("../images.jpg")
         self.img=self.img.resize((100, 100))
         self.img = ImageTk.PhotoImage(self.img)
         self.lab = Label(image=self.img)
-        self.lab.place(x=710, y=480)
+        self.lab.place(x=710, y=700)
 
     def updatePoints(self):
         return self.ecg.a_i,self.ecg.b_i
