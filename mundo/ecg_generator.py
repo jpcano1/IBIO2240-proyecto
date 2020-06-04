@@ -285,10 +285,10 @@ class ECGGenerator:
         file.close()
         file = open(params_path,"w")
 
-        file.write("frecuencia de muestreo:"+str(self.fs)+"\n")
+        file.write("Frecuencia de muestreo:"+str(self.fs)+"\n")
         file.write("Frecuencia cardiaca media:"+str(self.hr_mean)+"\n")
         file.write("Desv est frecuencia cardiaca:"+str(self.hr_std)+"\n")#Validar
-        file.write("frecuencia de muestreo:"+str(self.noise)+"\n")#Validad
+        file.write("Factor de ruido:"+str(self.noise)+"\n")#Validad
         file.write("# de latidos:"+str(self.num_latidos)+"\n")
         file.write("a_i:")
         for i in self.a_i:
@@ -332,7 +332,6 @@ class ECGGenerator:
             self.hr_std = float(file.readline().split(":")[1].replace("\n",""))
             self.noise = float(file.readline().split(":")[1].replace("\n",""))
             self.num_latidos = float(file.readline().split(":")[1].replace("\n",""))
-            print(self.fs,self.hr_mean,self.hr_std,self.noise,self.num_latidos)
             self.a_i=[float(x) for x in file.readline().split(":")[1].replace(",\n","").split(",")]
             self.b_i=[float(x) for x in file.readline().split(":")[1].replace(",\n","").split(",")]
             self.theta_i=[float(x) for x in file.readline().split(":")[1].replace(",\n","").split(",")]

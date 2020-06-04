@@ -38,3 +38,15 @@ class PanelParametros(Frame):
 
         self.factor_ruido_input = Entry(master=self, background='#212946',foreground='#dad0c0',insertbackground='#dad0c0')
         self.factor_ruido_input.grid(row=4, column=1)
+    def updateMe(self,fcardiaca,fmuestreo,fruido,latidos):
+        self.frecuencia_input.delete(0, END)
+        self.frecuencia_input.insert(0, fcardiaca)
+
+        self.frecuencia_muestreo_input.delete(0, END)
+        self.frecuencia_muestreo_input.insert(0, fmuestreo)
+
+        self.factor_ruido_input.delete(0, END)
+        self.factor_ruido_input.insert(0, fruido)
+
+        self.latidos_input.delete(0, END)
+        self.latidos_input.insert(0, latidos)

@@ -87,3 +87,36 @@ class PanelPuntos(Frame):
 
         Label(self, text="a_i",background='#212946', foreground='#FE53BB', font=('calibri', 12, 'bold')).grid(row=1, column=0)
         Label(self, text="b_i",background='#212946', foreground='#FE53BB', font=('calibri', 12, 'bold')).grid(row=2, column=0)
+
+    def updateMe(self):
+        self.variables_a, self.variables_b = self.interfaz.updatePoints()
+
+        self.t_b.delete(0, END)
+        self.t_b.insert(0,self.variables_b[4])
+
+        self.t_a.delete(0, END)
+        self.t_a.insert(0,self.variables_a[4])
+
+        self.s_b.delete(0, END)
+        self.s_b.insert(0,self.variables_b[3])
+
+        self.s_a.delete(0, END)
+        self.s_a.insert(0,self.variables_a[3])
+
+        self.r_b.delete(0, END)
+        self.r_b.insert(0,self.variables_b[2])
+
+        self.r_a.delete(0, END)
+        self.r_a.insert(0,self.variables_a[2])
+
+        self.q_b.delete(0, END)
+        self.q_b.insert(0,self.variables_b[1])
+
+        self.q_a.delete(0, END)
+        self.q_a.insert(0,self.variables_a[1])
+
+        self.p_b.delete(0, END)
+        self.p_b.insert(0,self.variables_b[0])
+
+        self.p_a.delete(0, END)
+        self.p_a.insert(0,self.variables_a[0])

@@ -36,11 +36,24 @@ class InterfazProyecto(Tk):
         self.panel_puntos.place(x=250, y=650)
         self.panel_puntos.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
-        self.img=Image.open("../images.jpg")
+        #Imágenes
+        self.img=Image.open("../data/img/images.jpg")
         self.img=self.img.resize((100, 100))
         self.img = ImageTk.PhotoImage(self.img)
-        self.lab = Label(image=self.img)
+        self.lab = Label(image=self.img,borderwidth=0)
         self.lab.place(x=710, y=500)
+
+        self.img2=Image.open("../data/img/lapiz.png")
+        self.img2=self.img2.resize((50, 50))
+        self.img2 = ImageTk.PhotoImage(self.img2)
+        self.lab2 = Label(image=self.img2,borderwidth=0)
+        self.lab2.place(x=150, y=670)
+
+        self.img3=Image.open("../data/img/heart.jpg")
+        self.img3=self.img3.resize((100, 90))
+        self.img3 = ImageTk.PhotoImage(self.img3)
+        self.lab3 = Label(image=self.img3,borderwidth=0)
+        self.lab3.place(x=130, y=100)
 
     def updatePoints(self):
         return self.ecg.a_i,self.ecg.b_i
@@ -50,6 +63,8 @@ class InterfazProyecto(Tk):
 
     def load(self):
         self.ecg.load_points()
+        self.panel_puntos.updateMe()
+        self.panel_parametros.updateMe(self.ecg.hr_mean,self.ecg.fs,self.ecg.noise,self.ecg.num_latidos)
 
     def plot(self):
         fcardiaca=self.panel_parametros.frecuencia_input.get()
@@ -57,23 +72,23 @@ class InterfazProyecto(Tk):
         fruido=self.panel_parametros.factor_ruido_input.get()
         latidos=self.panel_parametros.latidos_input.get()
         newa=[]
-        newa.append(float(self.panel_puntos.p_a))
-        newa.append(float(self.panel_puntos.q_a))
-        newa.append(float(self.panel_puntos.r_a))
-        newa.append(float(self.panel_puntos.s_a))
-        newa.append(float(self.panel_puntos.t_a))
+        newa.append(float(self.panel_puntos.p_a.get()))
+        newa.append(float(self.panel_puntos.q_a.get()))
+        newa.append(float(self.panel_puntos.r_a.get()))
+        newa.append(float(self.panel_puntos.s_a.get()))
+        newa.append(float(self.panel_puntos.t_a.get()))
 
         newb=[]
-        newb.append(float(self.panel_puntos.p_b))
-        newb.append(float(self.panel_puntos.q_b))
-        newb.append(float(self.panel_puntos.r_b))
-        newb.append(float(self.panel_puntos.s_b))
-        newb.append(float(self.panel_puntos.t_b))
+        newb.append(float(self.panel_puntos.p_b.get()))
+        newb.append(float(self.panel_puntos.q_b.get()))
+        newb.append(float(self.panel_puntos.r_b.get()))
+        newb.append(float(self.panel_puntos.s_b.get()))
+        newb.append(float(self.panel_puntos.t_b.get()))
 
-        self.ecg.a_i=newa
-        self.ecg.b_i=newb
+        self.ecg.a_i = newa
+        self.ecg.b_i = newb
 
-        if fcardiaca!= "":
+        if fcardiaca != "":
             self.ecg.hr_mean = float(fcardiaca)
         if fmuestreo != "":
             self.ecg.fs = float(fmuestreo)
