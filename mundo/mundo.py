@@ -79,7 +79,7 @@ def euler_mod(h=0.01, x_0=1., y_0=0., z_0=0.04, t_0=0., t_f=10.):
     for i in range(1, len(T)):
         x_euler[i] = x_euler[i - 1] + (h/2.0) * (x_dot(x_euler[i-1], y_euler[i-1],Ws[i-1]) + x_dot(x_euler[i-1], y_euler[i - 1],Ws[i - 1]))
         y_euler[i] = y_euler[i - 1] + (h/2.0) * (y_dot(x_euler[i-1], y_euler[i-1],Ws[i-1]) + y_dot(x_euler[i-1], y_euler[i - 1],Ws[i - 1]))
-        z_euler[i] = z_euler[i - 1] + (h/2.0) * (z_dot(x_euler[i], y_euler[i],z_euler[i], T[i])) + z_dot(x_euler[i-1], y_euler[i - 1],z_euler[i - 1], T[i - 1])
+        z_euler[i] = z_euler[i - 1] + (h/2.0) * (z_dot(x_euler[i], y_euler[i],z_euler[i], T[i]) + z_dot(x_euler[i-1], y_euler[i - 1],z_euler[i - 1], T[i - 1]))
     return T, z_euler
 
 T, z_euler = euler_mod()
