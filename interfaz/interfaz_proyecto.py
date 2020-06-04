@@ -12,7 +12,7 @@ class InterfazProyecto(Tk):
 
     def __init__(self, name="Interfaz"):
         super(InterfazProyecto, self).__init__(className=name)
-        self.geometry("1050x750")
+        self.geometry("1100x750")
 
         Style = ttk.Style()  # Objeto para crear estilos  # https://kite.com/python/docs/ttk.Style
         Style.configure('2.TButton', font=('Times', 20, 'bold', 'underline'), foreground='#E88A18')
@@ -29,7 +29,7 @@ class InterfazProyecto(Tk):
         self.panel_parametros.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_metodos = PanelMetodos(self) #Bien
-        self.panel_metodos.place(x=700, y=400)
+        self.panel_metodos.place(x=700, y=410)
         self.panel_metodos.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_opciones = PanelOpciones(self)
