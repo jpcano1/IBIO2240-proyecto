@@ -96,18 +96,22 @@ class InterfazProyecto(Tk):
         x,y=self.ecg.heart_rate()
         #self.panel_senales.pintar_aparte(x,self.ecg.points[y])
         window=tk.Toplevel(self)
+        window.configure(background='#212946')
+        title = Label(master=window, text="HR", background='#212946', foreground='#08F7FE',
+                      font=('calibri', 16, 'bold'))
+        title.pack()
         plt.style.use("dark_background")
         for param in ['text.color', 'axes.labelcolor', 'xtick.color', 'ytick.color']:
             plt.rcParams[param] = '0.9'  # very light grey
         for param in ['figure.facecolor', 'axes.facecolor', 'savefig.facecolor']:
             plt.rcParams[param] = '#212946'  # bluish dark grey
         colors = [
-            '#08F7FE',  # teal/cyan
             '#00ff41',  # matrix green
+            '#08F7FE',  # teal/cyan
         ]
         df = pd.DataFrame({'y': self.ecg.points[y]})
         fig, ax = plt.subplots()
-        ax.plot(x, self.ecg.points[y], color=colors[0], linewidth=1.4)
+        ax.plot(x, self.ecg.points[y], color=colors[0], linewidth=1.4,marker='s')
 
         # Redraw the data with low alpha and slighty increased linewidth:
         n_shades = 10
@@ -132,7 +136,6 @@ class InterfazProyecto(Tk):
         canvas.get_tk_widget().pack()
         canvas.draw()
         return len(y)
-
 
     def plot(self):
         fcardiaca=self.panel_parametros.frecuencia_input.get()
