@@ -12,7 +12,7 @@ class InterfazProyecto(Tk):
 
     def __init__(self, name="Interfaz"):
         super(InterfazProyecto, self).__init__(className=name)
-        self.geometry("960x800")
+        self.geometry("1050x750")
 
         Style = ttk.Style()  # Objeto para crear estilos  # https://kite.com/python/docs/ttk.Style
         Style.configure('2.TButton', font=('Times', 20, 'bold', 'underline'), foreground='#E88A18')
@@ -25,15 +25,15 @@ class InterfazProyecto(Tk):
         self.ecg=ECGGenerator()
 
         self.panel_parametros = PanelParametros(self) #Bien
-        self.panel_parametros.place(x=700, y=150)
+        self.panel_parametros.place(x=700, y=200)
         self.panel_parametros.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_metodos = PanelMetodos(self) #Bien
-        self.panel_metodos.place(x=700, y=300)
+        self.panel_metodos.place(x=700, y=400)
         self.panel_metodos.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_opciones = PanelOpciones(self)
-        self.panel_opciones.place(x=265, y=10)
+        self.panel_opciones.place(x=250, y=10)
         self.panel_opciones.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_senales = PanelSenales(self)
@@ -49,7 +49,7 @@ class InterfazProyecto(Tk):
         self.img=self.img.resize((100, 100))
         self.img = ImageTk.PhotoImage(self.img)
         self.lab = Label(image=self.img,borderwidth=0)
-        self.lab.place(x=710, y=500)
+        self.lab.place(x=800, y=40)
 
         self.img2=Image.open("../data/img/lapiz.png")
         self.img2=self.img2.resize((50, 50))
@@ -90,7 +90,7 @@ class InterfazProyecto(Tk):
         fmuestreo=self.panel_parametros.frecuencia_muestreo_input.get()
         fruido=self.panel_parametros.factor_ruido_input.get()
         latidos=self.panel_parametros.latidos_input.get()
-        newa=[]
+        newa = []
         newa.append(float(self.panel_puntos.p_a.get()))
         newa.append(float(self.panel_puntos.q_a.get()))
         newa.append(float(self.panel_puntos.r_a.get()))

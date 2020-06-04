@@ -1,8 +1,8 @@
-Frecuencia de muestreo:1.0
-Frecuencia cardiaca media:60.0
+Frecuencia de muestreo:360.0
+Frecuencia cardiaca media:80.0
 Desv est frecuencia cardiaca:1.0
 Factor de ruido:0.0
-# de latidos:10
+# de latidos:10.0
 a_i:1.2,-5.0,30.0,-7.5,0.75,
 b_i:0.25,0.1,0.1,0.1,0.411,
 theta_i:-1.0471975511965976,-0.2617993877991494,0.0,0.2617993877991494,1.5707963267948966,

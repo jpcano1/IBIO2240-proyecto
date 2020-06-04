@@ -9,7 +9,7 @@ class PanelMetodos(Frame):
         self.configure(background='#212946')
 
         # Titulo
-        Label(master=self, text="Metodo de solucion de ED", font=('calibri', 12, 'bold'), background='#212946', foreground='#08F7FE').pack(side=TOP)
+        Label(master=self, width=29, text="Metodo de solucion de ED", font=('calibri', 12, 'bold'), background='#212946', foreground='#08F7FE').pack(side=TOP)
 
         self.var_metodo = StringVar()
 
