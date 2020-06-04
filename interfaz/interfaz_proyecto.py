@@ -25,7 +25,7 @@ class InterfazProyecto(Tk):
         self.panel_metodos.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_opciones = PanelOpciones(self)
-        self.panel_opciones.place(x=250, y=10)
+        self.panel_opciones.place(x=265, y=10)
         self.panel_opciones.config(highlightbackground = "#F5D300",highlightcolor="#F5D300")
 
         self.panel_senales = PanelSenales(self)

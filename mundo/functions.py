@@ -75,7 +75,11 @@ def rk2(func, h=0.01, y_0=0.01, t_0=0., t_f=30.):
         y_rk2[i]=y_rk2[i-1]+(h/2.0)*(k1+k2)
 
     return T, y_rk2
+T, z_rk2 = rk2(f)
 
+plt.plot(T, z_rk2)
+plt.grid(linestyle="--")
+plt.show()
 def rk4(func, h=0.01, y_0=0.01, t_0=0., t_f=30.):
     T = np.arange(t_0, t_f + h, h)
     y_rk4 = np.zeros(len(T))
@@ -89,3 +93,8 @@ def rk4(func, h=0.01, y_0=0.01, t_0=0., t_f=30.):
         y_rk4[i] = y_rk4[i - 1] + (h / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
 
     return T, y_rk4
+T, z_rk4 = rk4(f)
+
+plt.plot(T, z_rk4)
+plt.grid(linestyle="--")
+plt.show()
