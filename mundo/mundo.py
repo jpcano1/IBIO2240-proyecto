@@ -79,14 +79,14 @@ def euler_mod(h=0.01, x_0=1., y_0=0., z_0=0.04, t_0=0., t_f=10.):
     for i in range(1, len(T)):
         x_euler[i] = x_euler[i - 1] + (h/2.0) * (x_dot(x_euler[i-1], y_euler[i-1],Ws[i-1]) + x_dot(x_euler[i-1], y_euler[i - 1],Ws[i - 1]))
         y_euler[i] = y_euler[i - 1] + (h/2.0) * (y_dot(x_euler[i-1], y_euler[i-1],Ws[i-1]) + y_dot(x_euler[i-1], y_euler[i - 1],Ws[i - 1]))
-        z_euler[i] = z_euler[i - 1] + (h/2.0) * (z_dot(x_euler[i], y_euler[i],z_euler[i], T[i])) + z_dot(x_euler[i-1], y_euler[i - 1],z_euler[i - 1], T[i - 1])
+        z_euler[i] = z_euler[i - 1] + (h/2.0) * (z_dot(x_euler[i], y_euler[i],z_euler[i], T[i]) + z_dot(x_euler[i-1], y_euler[i - 1],z_euler[i - 1], T[i - 1]))
     return T, z_euler
 
-T, z_euler = euler_mod()
-plt.title("MODIFIED")
-plt.plot(T, z_euler)
-plt.grid(linestyle="--")
-plt.show()
+# T, z_euler = euler_mod()
+# plt.title("MODIFIED")
+# plt.plot(T, z_euler)
+# plt.grid(linestyle="--")
+# plt.show()
 
 def rk2(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
     T = np.arange(t_0, t_f + h, h)
@@ -131,39 +131,62 @@ def rk4(h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
     y_rk4[0] = y_0
     z_rk4[0] = z_0
     for i in range(1, len(T)):
+        #Esto está bien
         x_k1 = x_dot(x_rk4[i-1], y_rk4[i-1], Ws[i-1])
         y_k1 = x_dot(x_rk4[i-1], y_rk4[i-1], Ws[i-1])
         z_k1 = z_dot(x_rk4[i-1], y_rk4[i-1], z_rk4[i-1], Ws[i-1])
 
-        x_k2 = x_dot(x_rk4[i-1] + 0.5 * h, y_rk4[i-1] + 0.5 * y_k1 * h,
-                     Ws[i-1] + h)
-        y_k2 = y_dot(x_rk4[i-1] + 0.5 * h, y_rk4[i-1] + 0.5 * y_k1 * h,
-                     Ws[i-1] + h)
-        z_k2 = z_dot(x_rk4[i-1] + 0.5 * h, y_rk4[i-1] + 0.5 * y_k1 * h,
-                     z_rk4[i-1] + z_k1 * h, Ws[i-1] + h)
+        # x_k2 = x_dot(x_rk4[i-1] + (0.5 * h), y_rk4[i-1] + (0.5 * y_k1 * h),
+        #              Ws[i-1] + h)
+        # y_k2 = y_dot(x_rk4[i-1] + (0.5 * h), y_rk4[i-1] + (0.5 * y_k1 * h),
+        #              Ws[i-1] + h)
+        # z_k2 = z_dot(x_rk4[i-1] + (0.5 * h), y_rk4[i-1] + (0.5 * y_k1 * h),
+        #              z_rk4[i-1] + (z_k1 * h), Ws[i-1] + h)
+        #
+        # x_k3 = x_dot(x_rk4[i - 1] + (0.5 * h), y_rk4[i - 1] + (0.5 * y_k2 * h),
+        #              Ws[i - 1] + h)
+        # y_k3 = y_dot(x_rk4[i - 1] + (0.5 * h), y_rk4[i - 1] + (0.5 * y_k2 * h),
+        #              Ws[i - 1] + h)
+        # z_k3 = z_dot(x_rk4[i - 1] + (0.5 * h), y_rk4[i - 1] + (0.5 * y_k2 * h),
+        #              z_rk4[i - 1] + (z_k2 * h), Ws[i - 1] + h)
+        #
+        # x_k4 = x_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + (y_k3 * h),
+        #              Ws[i - 1] + h)
+        # y_k4 = y_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + (y_k3 * h),
+        #              Ws[i - 1] + h)
+        # z_k4 = z_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + (y_k3 * h),
+        #              z_rk4[i - 1] + (z_k3 * h), Ws[i - 1] + h)
 
-        x_k3 = x_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
-                     Ws[i - 1] + h)
-        y_k3 = y_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
-                     Ws[i - 1] + h)
-        z_k3 = z_dot(x_rk4[i - 1] + 0.5 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
-                     z_rk4[i - 1] + z_k2 * h, Ws[i - 1] + h)
+        x_k2 = x_dot(x_rk4[i - 1] + 0.5 * x_k1 * h, y_rk4[i - 1] + 0.5 * y_k1 * h,
+                     Ws[i - 1] + 0.5 * h)
+        y_k2 = y_dot(x_rk4[i - 1] + 0.5 * x_k1 * h, y_rk4[i - 1] + 0.5 * y_k1 * h,
+                     Ws[i - 1] + 0.5 * h)
+        z_k2 = z_dot(x_rk4[i - 1] + 0.5 * x_k1 * h, y_rk4[i - 1] + 0.5 * y_k1 * h, z_rk4[i-1] + 0.5 * z_k1 * h,
+                     Ws[i - 1] + 0.5 * h)
 
-        x_k4 = x_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + y_k3 * h,
-                     Ws[i - 1] + h)
-        y_k4 = y_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + y_k3 * h,
-                     Ws[i - 1] + h)
-        z_k4 = z_dot(x_rk4[i - 1] + h, y_rk4[i - 1] + y_k3 * h,
-                     z_rk4[i - 1] + z_k3 * h, Ws[i - 1] + h)
+        x_k3 = x_dot(x_rk4[i - 1] + 0.5 * x_k2 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
+                     Ws[i - 1] + 0.5 * h)
+        y_k3 = y_dot(x_rk4[i - 1] + 0.5 * x_k2 * h, y_rk4[i - 1] + 0.5 * y_k2 * h,
+                     Ws[i - 1] + 0.5 * h)
+        z_k3 = z_dot(x_rk4[i - 1] + 0.5 * x_k2 * h, y_rk4[i - 1] + 0.5 * y_k2 * h, z_rk4[i-1] + 0.5 * z_k2 * h,
+                     Ws[i - 1] + 0.5 * h)
 
+        x_k4 = x_dot(x_rk4[i - 1] + x_k3 * h, y_rk4[i - 1] + y_k3 * h,
+                     Ws[i - 1] + h)
+        y_k4 = y_dot(x_rk4[i - 1] + x_k3 * h, y_rk4[i - 1] + y_k3 * h,
+                     Ws[i - 1] + h)
+        z_k4 = z_dot(x_rk4[i - 1] + x_k3 * h, y_rk4[i - 1] + y_k3 * h, z_rk4[i-1] + z_k3 * h,
+                     Ws[i - 1] + h)
+
+        # Esto está bien
         x_rk4[i] = x_rk4[i-1] + (h / 6.0) * (x_k1 + 2.0 * x_k2 + 2.0 * x_k3 + x_k4)
         y_rk4[i] = y_rk4[i-1] + (h / 6.0) * (y_k1 + 2.0 * y_k2 + 2.0 * y_k3 + y_k4)
         z_rk4[i] = z_rk4[i-1] + (h / 6.0) * (z_k1 + 2.0 * z_k2 + 2.0 * z_k3 + z_k4)
 
     return T, z_rk4
 
-# T, z_rk4 = rk4()
-#
-# plt.plot(T, z_rk4)
-# plt.grid(linestyle="--")
-# plt.show()
+T, z_rk4 = rk4()
+plt.title("RK4")
+plt.plot(T, z_rk4)
+plt.grid(linestyle="--")
+plt.show()
