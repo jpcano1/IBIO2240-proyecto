@@ -14,7 +14,7 @@ class PanelSenales(Frame):
         self.ax=None
         self.canvas=None
         # Título
-        self.title = Label(master=self, text="Señal de ECG",background='#212946',foreground='#08F7FE',font=("Helvetica", 16))
+        self.title = Label(master=self, text="Señal de ECG",background='#212946',foreground='#08F7FE',font=('calibri', 16, 'bold'))
         self.title.pack()
         # Canvas Plot
         x,y=self.interfaz.getXY()

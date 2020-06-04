@@ -13,7 +13,7 @@ class PanelPuntos(Frame):
 
         self.variables_a, self.variables_b = self.interfaz.updatePoints()
 
-        Label(self, text="P",background='#212946',foreground='#08F7FE').grid(row=0, column=1)
+        Label(self, text="P",background='#212946',foreground='#08F7FE', font=('calibri', 12, 'bold')).grid(row=0, column=1)
 
         self.p_a = Entry(master=self, background='#212946', foreground='#dad0c0',
                                       insertbackground='#dad0c0', width=4, highlightbackground="#F5D300",
@@ -27,7 +27,7 @@ class PanelPuntos(Frame):
         self.p_b.grid(row=2, column=1)
         self.p_b.insert(0,self.variables_b[0])
 
-        Label(self, text="Q",background='#212946',foreground='#08F7FE').grid(row=0, column=2)
+        Label(self, text="Q",background='#212946',foreground='#08F7FE', font=('calibri', 12, 'bold')).grid(row=0, column=2)
 
         self.q_a = Entry(master=self, background='#212946', foreground='#dad0c0',
                                       insertbackground='#dad0c0', width=4, highlightbackground="#F5D300",
@@ -42,7 +42,7 @@ class PanelPuntos(Frame):
         self.q_b.insert(0,self.variables_b[1])
 
 
-        Label(self, text="R",background='#212946',foreground='#08F7FE').grid(row=0, column=3)
+        Label(self, text="R",background='#212946',foreground='#08F7FE', font=('calibri', 12, 'bold')).grid(row=0, column=3)
 
         self.r_a = Entry(master=self, background='#212946', foreground='#dad0c0',
                                       insertbackground='#dad0c0', width=4, highlightbackground="#F5D300",
@@ -56,7 +56,7 @@ class PanelPuntos(Frame):
         self.r_b.grid(row=2, column=3)
         self.r_b.insert(0,self.variables_b[2])
 
-        Label(self, text="S",background='#212946',foreground='#08F7FE').grid(row=0, column=4)
+        Label(self, text="S",background='#212946',foreground='#08F7FE', font=('calibri', 12, 'bold')).grid(row=0, column=4)
 
         self.s_a = Entry(master=self, background='#212946', foreground='#dad0c0',
                                       insertbackground='#dad0c0', width=4, highlightbackground="#F5D300",
@@ -70,7 +70,7 @@ class PanelPuntos(Frame):
         self.s_b.grid(row=2, column=4)
         self.s_b.insert(0,self.variables_b[3])
 
-        Label(self, text="T",background='#212946',foreground='#08F7FE').grid(row=0, column=5)
+        Label(self, text="T",background='#212946',foreground='#08F7FE', font=('calibri', 12, 'bold')).grid(row=0, column=5)
 
         self.t_a = Entry(master=self, background='#212946', foreground='#dad0c0',
                                       insertbackground='#dad0c0', width=4, highlightbackground="#F5D300",
