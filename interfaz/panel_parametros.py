@@ -9,10 +9,10 @@ class PanelParametros(Frame):
         self.configure(background='#212946')
 
         style_titles=ttk.Style()
-        style_titles.configure('titulos.Label',background='#212946', foreground='#08F7FE')
+        style_titles.configure('titulos.Label',background='#212946', foreground='#08F7FE',font=('calibri', 15, 'bold'))
 
         style_subtitles = ttk.Style()
-        style_subtitles.configure('subtitulos.Label', background='#212946', foreground='#FE53BB')
+        style_subtitles.configure('subtitulos.Label', background='#212946', foreground='#FE53BB',font=('calibri', 12, 'bold'))
 
         # Titulo
         ttk.Label(master=self, text="Parámetros",style='titulos.Label').grid(row=0, column=0)

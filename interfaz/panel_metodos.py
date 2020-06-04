@@ -14,7 +14,7 @@ class PanelMetodos(Frame):
         self.var_metodo = StringVar()
 
         # Radio Buttons
-        self.radio_euler_adelante = Radiobutton(master=self, text="Euler Adelante",background='#212946',
+        self.radio_euler_adelante = Radiobutton(master=self, text="Euler Adelante",font=('calibri', 12, 'bold'),background='#212946',
                                                 foreground='#00ff41', activebackground='#212946',
                                                 activeforeground='#00ff41', selectcolor='#212946',
                                                 value="EA", variable=self.var_metodo, command=self.plot)
