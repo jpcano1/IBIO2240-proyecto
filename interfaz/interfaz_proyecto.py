@@ -7,7 +7,7 @@ from interfaz.panel_puntos import PanelPuntos
 from mundo.ecg_generator import ECGGenerator
 from PIL import ImageTk ,Image
 from tkinter import ttk
-
+import tkinter as tk
 class InterfazProyecto(Tk):
 
     def __init__(self, name="Interfaz"):
@@ -63,16 +63,16 @@ class InterfazProyecto(Tk):
         self.lab3 = Label(image=self.img3,borderwidth=0)
         self.lab3.place(x=130, y=100)
 
-        Boton2 = ttk.Button(master=self, text="X", style="2.TButton", command=self.CerrarAplicacion2).place(x=0, y=0)
+        Boton2 = ttk.Button(master=self, text="X", style="2.TButton", command=self.CerrarAplicacion).place(x=0, y=0)
 
     '''Se definen todas las funciones requeridas'''
 
     def CerrarAplicacion(self):
-        MsgBox = self.messagebox.askquestion('Cerrar Aplicación', '¿Está seguro que desea cerrar la aplicación?',icon='warning')
-        if MsgBox == 'yes':
+        self.MsgBox = tk.messagebox.askquestion('Cerrar Aplicación', '¿Está seguro que desea cerrar la aplicación?',icon='warning')
+        if self.MsgBox == 'yes':
             self.destroy()
         else:
-            self.messagebox.showinfo('Retornar', 'Será retornado a la aplicación')
+            tk.messagebox.showinfo('Retornar', 'Será retornado a la aplicación')
 
     def CerrarAplicacion2(self):
         self.destroy()
