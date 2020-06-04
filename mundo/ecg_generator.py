@@ -109,6 +109,28 @@ class ECGGenerator:
         self.interval = rango; self.points = self.noise_factor(z_euler)
         return
 
+    def euler_mod(self,h=0.01, x_0=1., y_0=0., z_0=0.04, t_0=0., t_f=10.):
+        T = np.arange(t_0, t_f + h, h)
+        x_euler = np.zeros(len(T))
+        Ws = self.w_t(T)
+        y_euler = np.zeros(len(T))
+        z_euler = np.zeros(len(T))
+        x_euler[0] = x_0
+        y_euler[0] = y_0
+        z_euler[0] = z_0
+        for i in range(1, len(T)):
+            x_euler[i] = x_euler[i - 1] + (h / 2.0) * (
+                        self.x_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1]) + self.x_dot(x_euler[i - 1], y_euler[i - 1],
+                                                                                 Ws[i - 1]))
+            y_euler[i] = y_euler[i - 1] + (h / 2.0) * (
+                        self.y_dot(x_euler[i - 1], y_euler[i - 1], Ws[i - 1]) + self.y_dot(x_euler[i - 1], y_euler[i - 1],
+                                                                                 Ws[i - 1]))
+            z_euler[i] = z_euler[i - 1] + (h / 2.0) * (self.z_dot(x_euler[i], y_euler[i], z_euler[i], T[i])) + self.z_dot(
+                x_euler[i - 1], y_euler[i - 1], z_euler[i - 1], T[i - 1])
+        rango = np.arange(len(T)) / self.fs
+        self.interval = rango; self.points = self.noise_factor(z_euler)
+        return
+
     def euler_backward(self, h=0.01, x_0=1, y_0=0, z_0=0.04, t_0=0, t_f=10):
         """
         Algoritmo que soluciona ecuaciones diferenciales
